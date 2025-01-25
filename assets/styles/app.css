@@ -1,7 +1,7 @@
-body {
-    background-color: skyblue;
-}
-
-.alert {
-    background-color: red;
+.gradient-text {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
 }
