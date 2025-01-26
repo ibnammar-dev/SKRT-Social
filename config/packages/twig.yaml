@@ -2,7 +2,7 @@ twig:
     file_name_pattern: '*.twig'
     form_themes: ['bootstrap_5_layout.html.twig']
     globals:
-        app_name: 'PodTasty'
+        app_name: 'SKRT'
 
 when@test:
     twig:

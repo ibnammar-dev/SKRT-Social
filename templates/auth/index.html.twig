@@ -25,18 +25,16 @@
 						{{ form_start(registration_form) }}
 						<div class="row g-3">
 							<div class="col-md-6">
-								{{ form_label(registration_form.firstName, 'First name') }}
 								{{ form_widget(registration_form.firstName, {
 										'attr': {
 											'class': 'form-control form-control-lg',
-											'placeholder': 'John'
+											'placeholder': 'First name'
 										}
 									}) }}
 								{{ form_errors(registration_form.firstName) }}
 							</div>
 
 							<div class="col-md-6">
-								{{ form_label(registration_form.lastName, 'Last name') }}
 								{{ form_widget(registration_form.lastName, {
 										'attr': {
 											'class': 'form-control form-control-lg',
@@ -48,32 +46,31 @@
 						</div>
 
 						<div class="mb-3 mt-3">
-							{{ form_label(registration_form.email, 'Email address') }}
 							{{ form_widget(registration_form.email, {
 									'attr': {
 										'class': 'form-control form-control-lg',
-										'placeholder': 'name@example.com'
+										'placeholder': 'Email'
 									}
 								}) }}
 							{{ form_errors(registration_form.email) }}
 						</div>
 
 						<div class="mb-3">
-							{{ form_label(registration_form.password, 'Create password') }}
 							{{ form_widget(registration_form.password, {
 									'attr': {
 										'class': 'form-control form-control-lg',
-										'placeholder': '••••••••'
+										'placeholder': 'Create password'
 									}
 								}) }}
 							{{ form_errors(registration_form.password) }}
 						</div>
 
 						<div class="mb-4">
-							{{ form_label(registration_form.birthday, 'Birthday') }}
 							{{ form_widget(registration_form.birthday, {
 									'attr': {
-										'class': 'form-control form-control-lg'
+										'class': 'form-control form-control-lg',
+										'placeholder': 'Birthday',
+										'aria-label': 'Birthday'
 									}
 								}) }}
 							{{ form_errors(registration_form.birthday) }}
@@ -81,7 +78,7 @@
 
 						<div class="d-grid gap-2">
 							{{ form_widget(registration_form.register, {
-									'attr': {'class': 'btn btn-primary btn-lg'},
+									'attr': {'class': 'btn btn-gradient btn-lg'},
 									'label': 'Create account'
 								}) }}
 						</div>

@@ -29,28 +29,27 @@
 									'attr': {
 										'class': 'form-control form-control-lg',
 										'value': last_username,
-										'placeholder': 'Enter your email'
+										'placeholder': ' Email'
 									}
 								}) }}
 							{{ form_errors(login_form._username) }}
 						</div>
-
 						<div class="mb-4">
-							{{ form_label(login_form._password, 'Password') }}
 							{{ form_widget(login_form._password, {
 									'attr': {
-										'class': 'form-control form-control-lg',
-										'placeholder': '••••••••'
+										'class': 'form-control form-control-lg  text-muted',
+										'placeholder': 'Password',
+										'aria-label': 'Password'
 									}
 								}) }}
+
 							{{ form_errors(login_form._password) }}
 						</div>
-
 						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 						<div class="d-grid gap-2">
 							{{ form_widget(login_form.login, {
-									'attr': {'class': 'btn btn-primary btn-lg'},
+									'attr': {'class': 'btn btn-gradient btn-lg'},
 									'label': 'Sign in to your account'
 								}) }}
 						</div>
