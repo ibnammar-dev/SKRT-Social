@@ -9,13 +9,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\User;
+use App\Entity\Post;
 
 class ProfileController extends AbstractController
 {
-    #[Route('/profile', name: 'app_profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/profile/{id}', name: 'app_profile')]
+    public function index(?User $user = null, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
+        if (!$user) {
+            $user = $this->getUser();
+        }
+
+        // Get user's posts ordered by creation date
+        $posts = $entityManager
+            ->getRepository(Post::class)
+            ->findBy(['user' => $user], ['createdAt' => 'DESC']);
 
         // Create profile picture form only for current user
         $profilePictureForm = null;
@@ -26,12 +35,13 @@ class ProfileController extends AbstractController
             if ($profilePictureForm->isSubmitted() && $profilePictureForm->isValid()) {
                 $entityManager->flush();
                 $this->addFlash('success', 'Profile picture updated successfully!');
-                return $this->redirectToRoute('app_profile');
+                return $this->redirectToRoute('app_profile', ['id' => $user->getId()]);
             }
         }
 
         return $this->render('profile/index.html.twig', [
             'user' => $user,
+            'posts' => $posts,
             'profile_picture_form' => $profilePictureForm?->createView()
         ]);
     }
