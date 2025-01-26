@@ -1,17 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Registration
+{% block navigation %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block title %}Create Account
 {% endblock %}
 
 {% block content %}
 	<div class="container mt-5">
 		<div class="row justify-content-center">
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-header">
-						<h2 class="text-center">Register</h2>
-					</div>
-					<div class="card-body">
+			<div class="col-md-5">
+				{% include 'components/brand.html.twig' with {
+					subtitle: 'Create your account to get started'
+				} %}
+
+				<div class="card shadow-sm border-0 rounded-3">
+					<div class="card-body p-4">
 						{% for flash_message in app.flashes('success') %}
 							<div class="alert alert-success">
 								{{ flash_message }}
@@ -19,38 +23,76 @@
 						{% endfor %}
 
 						{{ form_start(registration_form) }}
-						<div class="mb-3">
-							{{ form_label(registration_form.email) }}
-							{{ form_widget(registration_form.email, {'attr': {'class': 'form-control'}}) }}
+						<div class="row g-3">
+							<div class="col-md-6">
+								{{ form_label(registration_form.firstName, 'First name') }}
+								{{ form_widget(registration_form.firstName, {
+										'attr': {
+											'class': 'form-control form-control-lg',
+											'placeholder': 'John'
+										}
+									}) }}
+								{{ form_errors(registration_form.firstName) }}
+							</div>
+
+							<div class="col-md-6">
+								{{ form_label(registration_form.lastName, 'Last name') }}
+								{{ form_widget(registration_form.lastName, {
+										'attr': {
+											'class': 'form-control form-control-lg',
+											'placeholder': 'Doe'
+										}
+									}) }}
+								{{ form_errors(registration_form.lastName) }}
+							</div>
+						</div>
+
+						<div class="mb-3 mt-3">
+							{{ form_label(registration_form.email, 'Email address') }}
+							{{ form_widget(registration_form.email, {
+									'attr': {
+										'class': 'form-control form-control-lg',
+										'placeholder': 'name@example.com'
+									}
+								}) }}
 							{{ form_errors(registration_form.email) }}
 						</div>
 
 						<div class="mb-3">
-							{{ form_label(registration_form.password) }}
-							{{ form_widget(registration_form.password, {'attr': {'class': 'form-control'}}) }}
+							{{ form_label(registration_form.password, 'Create password') }}
+							{{ form_widget(registration_form.password, {
+									'attr': {
+										'class': 'form-control form-control-lg',
+										'placeholder': '••••••••'
+									}
+								}) }}
 							{{ form_errors(registration_form.password) }}
 						</div>
 
-						<div class="mb-3">
-							{{ form_label(registration_form.firstName) }}
-							{{ form_widget(registration_form.firstName, {'attr': {'class': 'form-control'}}) }}
-							{{ form_errors(registration_form.firstName) }}
-						</div>
-
-						<div class="mb-3">
-							{{ form_label(registration_form.lastName) }}
-							{{ form_widget(registration_form.lastName, {'attr': {'class': 'form-control'}}) }}
-							{{ form_errors(registration_form.lastName) }}
-						</div>
-
-						<div class="mb-3">
-							{{ form_label(registration_form.birthday) }}
-							{{ form_widget(registration_form.birthday, {'attr': {'class': 'form-control'}}) }}
+						<div class="mb-4">
+							{{ form_label(registration_form.birthday, 'Birthday') }}
+							{{ form_widget(registration_form.birthday, {
+									'attr': {
+										'class': 'form-control form-control-lg'
+									}
+								}) }}
 							{{ form_errors(registration_form.birthday) }}
 						</div>
 
-						{{ form_widget(registration_form.register, {'attr': {'class': 'btn btn-primary w-100'}}) }}
+						<div class="d-grid gap-2">
+							{{ form_widget(registration_form.register, {
+									'attr': {'class': 'btn btn-primary btn-lg'},
+									'label': 'Create account'
+								}) }}
+						</div>
 						{{ form_end(registration_form) }}
+
+						<div class="mt-4 text-center">
+							<p class="text-muted">
+								Already have an account?
+								<a href="{{ path('app_login') }}" class="text-decoration-none">Sign in</a>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>

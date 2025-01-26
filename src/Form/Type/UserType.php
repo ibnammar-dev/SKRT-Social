@@ -17,15 +17,43 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
+            ->add('firstName', TextType::class, [
+                'label' => 'First name',
+                'attr' => [
+                    'placeholder' => 'John',
+                    'class' => 'form-control form-control-lg'
+                ]
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Last name',
+                'attr' => [
+                    'placeholder' => 'Doe',
+                    'class' => 'form-control form-control-lg'
+                ]
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email address',
+                'attr' => [
+                    'placeholder' => 'name@example.com',
+                    'class' => 'form-control form-control-lg'
+                ]
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Create password',
+                'attr' => [
+                    'placeholder' => '••••••••',
+                    'class' => 'form-control form-control-lg'
+                ]
+            ])
             ->add('birthday', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
+                'attr' => ['class' => 'form-control form-control-lg']
             ])
-            ->add('register', SubmitType::class)
+            ->add('register', SubmitType::class, [
+                'label' => 'Create account',
+                'attr' => ['class' => 'btn btn-primary btn-lg w-100']
+            ])
         ;
     }
 

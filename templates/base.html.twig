@@ -22,10 +22,10 @@
 			{% endblock %}
 		{% endblock %}
 	</head>
-	<body
-		class="d-flex flex-column h-100 bg-light">
-		<!-- Sticky Navbar -->
-		{% include 'components/navbar.html.twig' %}
+	<body class="d-flex flex-column h-100 bg-light">
+		{% block navigation %}
+			{% include 'components/navbar.html.twig' %}
+		{% endblock %}
 
 		<br>
 		<!-- Main Content -->
@@ -34,9 +34,11 @@
 				</div>
 			</main>
 
-			<!-- Sticky Footer -->
-			<footer class="footer mt-auto py-3">
-				{% include 'components/footer.html.twig' %}
-			</footer>
+			{% block footer %}
+				<!-- Sticky Footer -->
+				<footer class="footer mt-auto py-3">
+					{% include 'components/footer.html.twig' %}
+				</footer>
+			{% endblock %}
 		</body>
 	</html>

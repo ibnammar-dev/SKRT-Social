@@ -1,26 +1,70 @@
-{# templates/login/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{# ... #}
+{% block navigation %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block title %}Log in
+{% endblock %}
 
 {% block content %}
-	{% if error %}
-		<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-	{% endif %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-5">
+				{% include 'components/brand.html.twig' with {
+					subtitle: 'Welcome back! Please sign in to continue'
+				} %}
 
-	<form action="{{ path('app_login') }}" method="post">
-		<label for="username">Email:</label>
-		<input type="text" id="username" name="_username" value="{{ last_username }}" required>
+				<div class="card shadow-sm border-0 rounded-3">
+					<div class="card-body p-4">
+						{% if error %}
+							<div class="alert alert-danger">
+								{{ error.messageKey|trans(error.messageData, 'security') }}
+							</div>
+						{% endif %}
 
-		<label for="password">Password:</label>
-		<input
-		type="password" id="password" name="_password" required>
+						{{ form_start(login_form) }}
+						<div class="mb-3">
+							{{ form_label(login_form._username, 'Email address') }}
+							{{ form_widget(login_form._username, {
+									'attr': {
+										'class': 'form-control form-control-lg',
+										'value': last_username,
+										'placeholder': 'Enter your email'
+									}
+								}) }}
+							{{ form_errors(login_form._username) }}
+						</div>
 
-		{# If you want to control the URL the user is redirected to on success
-								        <input type="hidden" name="_target_path" value="/account"> #}
-		<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+						<div class="mb-4">
+							{{ form_label(login_form._password, 'Password') }}
+							{{ form_widget(login_form._password, {
+									'attr': {
+										'class': 'form-control form-control-lg',
+										'placeholder': '••••••••'
+									}
+								}) }}
+							{{ form_errors(login_form._password) }}
+						</div>
 
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-		<button type="submit">login</button>
-	</form>
+						<div class="d-grid gap-2">
+							{{ form_widget(login_form.login, {
+									'attr': {'class': 'btn btn-primary btn-lg'},
+									'label': 'Sign in to your account'
+								}) }}
+						</div>
+						{{ form_end(login_form) }}
+
+						<div class="mt-4 text-center">
+							<p class="text-muted">
+								Don't have an account?
+								<a href="{{ path('app_auth') }}" class="text-decoration-none">Create one now</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
