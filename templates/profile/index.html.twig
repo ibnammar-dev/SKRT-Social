@@ -1,69 +1,72 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-	{# Cover/Header Section #}
-	<div class="profile-header bg-theme-gradient position-relative mb-5" style="height: 350px;">
-		<div
-			class="container position-relative h-100">
-			{# Profile Picture #}
-			<div class="position-absolute" style="bottom: -50px; left: 30px;">
-				{% if user.profilePicture %}
-					<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="{{ user.firstName }}'s profile picture" class="rounded-circle border border-4 border-white shadow" style="width: 168px; height: 168px; object-fit: cover;">
-				{% else %}
-					<div class="rounded-circle border border-4 border-white shadow bg-secondary d-flex align-items-center justify-content-center" style="width: 168px; height: 168px;">
-						<span class="text-white" style="font-size: 4rem;">{{ user.firstName|first|upper }}</span>
-					</div>
-				{% endif %}
-			</div>
+	<div
+		class="container py-2 px-2">
+		{# Cover Section #}
+		<div class="profile-cover rounded-top" style="height: 140px;"></div>
 
-			{# Edit Profile Button #}
-			<div class="position-absolute" style="bottom: 20px; right: 30px;">
-				<a href="{{ path('app_profile_edit') }}" class="btn btn-light shadow-sm">
-					<i class="fas fa-pencil-alt me-2"></i>Edit Profile
-				</a>
-			</div>
-		</div>
-	</div>
-
-	{# Profile Content #}
-	<div class="container">
 		<div
-			class="row">
-			{# Left Column - User Info #}
-			<div class="col-md-4">
-				<div class="card shadow-sm mb-4">
-					<div class="card-body">
-						<h2 class="h4 mb-4">About</h2>
-						<div class="mb-3">
-							<div class="d-flex align-items-center mb-3">
-								<i class="fas fa-envelope text-muted me-3" style="width: 20px;"></i>
-								<span>{{ user.email }}</span>
-							</div>
-							{% if user.birthday %}
-								<div class="d-flex align-items-center mb-3">
-									<i class="fas fa-birthday-cake text-muted me-3" style="width: 20px;"></i>
-									<span>{{ user.birthday|date('F d, Y') }}</span>
-								</div>
-							{% endif %}
-							<div class="d-flex align-items-center">
-								<i class="fas fa-user text-muted me-3" style="width: 20px;"></i>
-								<span>{{ user.firstName }}
-									{{ user.lastName }}</span>
-							</div>
+			class="">
+			{# Main Profile Card #}
+			<div
+				class="profile-main-card card border-0 shadow-sm">
+				{# Profile Picture Section #}
+				<div class="profile-picture-section">
+					{% if user.profilePicture %}
+						<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="Profile picture" class="profile-picture">
+					{% else %}
+						<div class="profile-picture-placeholder">
+							{{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+						</div>
+					{% endif %}
+				</div>
+
+				{# Profile Info Section #}
+				<div class="card-body pb-4">
+					<div class="row">
+						<div class="col-md-8 offset-md-2">
+							<h1 class="profile-name">{{ user.firstName }}
+								{{ user.lastName }}</h1>
+							<p class="text-muted">{{ user.email }}</p>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{# Right Column - Posts/Activity #}
-			<div class="col-md-8">
-				<div class="card shadow-sm">
-					<div class="card-body">
-						<h2 class="h4 mb-4">Recent Activity</h2>
-						{# Here you can add user's posts or activity #}
-						<div class="text-center text-muted py-5">
-							<i class="fas fa-stream mb-3" style="font-size: 2rem;"></i>
-							<p>No activity to show yet</p>
+			{# Content Section #}
+			<div
+				class="row mt-4">
+				{# Left Column #}
+				<div class="col-md-4">
+					<div class="card shadow-sm mb-4">
+						<div class="card-body">
+							<h5 class="card-title mb-3">About</h5>
+							<div class="profile-info">
+								<div class="info-item">
+									<i class="fas fa-envelope text-muted"></i>
+									<span>{{ user.email }}</span>
+								</div>
+								{% if user.birthday %}
+									<div class="info-item">
+										<i class="fas fa-birthday-cake text-muted"></i>
+										<span>{{ user.birthday|date('F d, Y') }}</span>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{# Right Column #}
+				<div class="col-md-8">
+					<div class="card shadow-sm">
+						<div class="card-body">
+							<h5 class="card-title mb-4">Recent Activity</h5>
+							<div class="text-center text-muted py-5">
+								<i class="fas fa-stream fa-2x mb-3"></i>
+								<p>No activity to show yet</p>
+							</div>
 						</div>
 					</div>
 				</div>

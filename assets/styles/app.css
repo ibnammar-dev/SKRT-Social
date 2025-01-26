@@ -93,54 +93,91 @@ a {
 }
 
 /* Profile styles */
-.profile-header {
+.profile-cover {
     background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    margin-bottom: 75px;
+}
+
+.profile-main-card {
+    margin-top: -75px;
     position: relative;
-    overflow: hidden;
+    z-index: 1;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 }
 
-.profile-header::before {
-    content: '';
+/* Profile Picture */
+.profile-picture-section {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
+    left: 32px;
+    top: -40px;
 }
 
-/* Profile card hover effects */
-.profile-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.profile-picture,
+.profile-picture-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.profile-picture {
+    object-fit: cover;
 }
 
-/* Profile stats */
-.profile-stats {
+.profile-picture-placeholder {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    color: white;
     display: flex;
-    justify-content: space-around;
-    padding: 1rem 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 1rem 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 500;
 }
 
-.profile-stat-item {
-    text-align: center;
+/* Profile Info */
+.profile-name {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
 }
 
-.profile-stat-value {
-    font-size: 1.5rem;
-    font-weight: bold;
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.info-item i {
+    width: 16px;
     color: var(--primary-color);
 }
 
-.profile-stat-label {
-    font-size: 0.875rem;
-    color: #6c757d;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-cover {
+        margin-bottom: 100px;
+    }
+
+    .profile-picture-section {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .profile-main-card .card-body {
+        padding-top: 70px;
+        text-align: center;
+    }
+
+    .col-md-8.offset-md-3 {
+        margin-left: 0;
+    }
 }
 
