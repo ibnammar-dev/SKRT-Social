@@ -1,33 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PostController!
+{% block title %}Feed
 {% endblock %}
 
 {% block content %}
-	<div class="post-form">
-		<h2>Create New Post</h2>
-		{{ form(form) }}
-		</div>
-
-		<div class="posts-list">
-			<h2>All Posts</h2>
-			{% if posts|length > 0 %}
-				{% for post in posts %}
-					<div class="post">
-						<p>{{ post.text }}</p>
-						{% if post.imageName %}
-							<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" style="max-width: 300px">
-						{% endif %}
-						<div class="actions">
-							<a href="{{ path('post_show', {'id': post.id}) }}">View</a>
-							<a href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
-							<a href="{{ path('post_delete', {'id': post.id}) }}" onclick="return confirm('Are you sure?')">Delete</a>
+<div
+	class="container py-4">
+	{# Create Post Card #}
+	<div class="row justify-content-center">
+		<div class="card shadow-sm mb-4 w-50 p-0">
+			{{ form_start(form, {'attr': {'class': 'create-post-form'}}) }}
+			<div class="card-body pb-0">
+				<div class="mb-3">
+					{{ form_widget(form.text, {
+						'attr': {
+							'class': 'form-control border-1',
+							'placeholder': 'Hey ' ~ app.user.firstName ~ ', what\'s on your mind?',
+							'rows': '3'
+						}
+					}) }}
+				</div>
+				{# Image Upload Area #}
+				<div class="upload-area mb-3" id="uploadArea">
+					{{ form_widget(form.imageFile, {
+						'attr': {
+							'class': 'hidden-file-input',
+							'data-target': 'preview-image'
+						}
+					}) }}
+					<div class="upload-area-inner">
+						<div class="upload-area-content text-center">
+							<i class="fas fa-cloud-upload-alt"></i>
+							<span class="ms-2">Add Image</span>
+						</div>
+						<div id="previewContainer" class="preview-container d-none">
+							<img id="preview-image" src="#" alt="Preview" class="img-preview">
+							<button type="button" class="btn-remove-image">
+								<i class="fas fa-times"></i>
+							</button>
 						</div>
 					</div>
+				</div>
+				
+			</div>
+			<div class="card-footer p-0">
+				<button type="submit" class="btn btn-gradient w-100 rounded-0 rounded-bottom py-3">
+					<i class="fas fa-paper-plane me-2"></i>Post
+				</button>
+			</div>
+		{{ form_end(form) }}
+	</div>
+	</div>
+
+	{# Posts List #}
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			{% if posts|length > 0 %}
+				{% for post in posts %}
+					{{ include('components/post_card.html.twig', {post: post}) }}
 				{% endfor %}
 			{% else %}
-				<p>No posts found.</p>
+				<div class="text-center py-5 text-muted">
+					<i class="fas fa-newspaper fa-3x mb-3"></i>
+					<h5>No posts yet</h5>
+					<p>Be the first to share something!</p>
+				</div>
 			{% endif %}
 		</div>
-
-	{% endblock %}
+	</div>
+</div>
+{% endblock %}

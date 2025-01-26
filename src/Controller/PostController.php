@@ -17,6 +17,8 @@ final class PostController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $post = new Post();
+        $post->setUser($this->getUser());
+
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -30,8 +32,10 @@ final class PostController extends AbstractController
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
 
-        // Fetch all posts
-        $posts = $entityManager->getRepository(Post::class)->findAll();
+        // Fetch all posts ordered by creation date (newest first)
+        $posts = $entityManager
+            ->getRepository(Post::class)
+            ->findBy([], ['createdAt' => 'DESC']);
 
         return $this->render('post/index.html.twig', [
             'form' => $form->createView(),

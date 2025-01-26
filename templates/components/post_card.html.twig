@@ -1,0 +1,30 @@
+<div class="card shadow-sm mb-4 post-card">
+	<div
+		class="card-body p-4">
+		{# Post Header #}
+		<div class="d-flex align-items-center mb-3">
+			{% if post.user.profilePicture %}
+				<img src="{{ vich_uploader_asset(post.user, 'profilePictureFile') }}" alt="Profile picture" class="post-author-avatar">
+			{% else %}
+				<div class="post-author-avatar-placeholder">
+					{{ post.user.firstName|first|upper }}{{ post.user.lastName|first|upper }}
+				</div>
+			{% endif %}
+			<div class="ms-3">
+				<h6 class="mb-0">{{ post.user.firstName }}
+					{{ post.user.lastName }}</h6>
+				<small class="text-muted">{{ post.createdAt|ago }}</small>
+			</div>
+		</div>
+
+		{# Post Content #}
+		<p class="card-text mb-3">{{ post.text }}</p>
+
+		{# Post Image #}
+		{% if post.imageName %}
+			<div class="post-image-container">
+				<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" class="post-image">
+			</div>
+		{% endif %}
+	</div>
+</div>

@@ -10,22 +10,24 @@ use Symfony\Component\Form\FormBuilderInterface;
 use App\Entity\Post;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('text', TextType::class)
+            ->add('text', TextareaType::class, [
+                'label' => false,
+            ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
-                'allow_delete' => true,
-                'delete_label' => 'Delete image',
+                'allow_delete' => false,
                 'download_uri' => false,
-                'image_uri' => true,
+                'image_uri' => false,
                 'asset_helper' => true,
+                'label' => false,
             ])
-            ->add('save', SubmitType::class)
         ;
     }
 

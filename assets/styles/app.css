@@ -211,3 +211,168 @@ a {
     opacity: 1;
 }
 
+/* Post Form Styles */
+.create-post-form textarea {
+    resize: none;
+    font-size: 1rem;
+    padding: 1rem;
+}
+
+.create-post-form textarea:focus {
+    box-shadow: none;
+}
+
+/* Update upload area styles */
+.upload-area {
+    cursor: pointer;
+    border: 2px dashed #dee2e6;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    background-color: #f8f9fa;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background-color: #f1f3f5;
+}
+
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background-color: rgba(255, 107, 107, 0.05);
+}
+
+.upload-area-inner {
+    padding: 1.5rem;
+    width: 100%;
+}
+
+.upload-area-content {
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.upload-area-content i {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.upload-area-content span {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.preview-container {
+    position: relative;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.img-preview {
+    width: 100%;
+    max-height: 200px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.btn-remove-image {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #dc3545;
+}
+
+/* Post Card Styles */
+.post-card {
+    border-radius: 1rem;  /* Softer corners */
+    overflow: hidden;  /* Ensure content respects border radius */
+}
+
+/* Post Image */
+.post-image-container {
+    margin: 0 -1.5rem -1.5rem;
+    position: relative;
+    padding-top: 56.25%;  /* 16:9 Aspect Ratio */
+    overflow: hidden;
+    background-color: #f8f9fa;
+}
+
+.post-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Post Author */
+.post-author-avatar,
+.post-author-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-author-avatar-placeholder {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Post Image Hover Effect */
+.post-image-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.post-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.post-image-overlay i {
+    color: white;
+    font-size: 2rem;
+}
+
+.post-image-container:hover .post-image-overlay {
+    opacity: 1;
+}
+
+/* Remove all modal-related styles */
+
