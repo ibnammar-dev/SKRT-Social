@@ -13,12 +13,27 @@
 				class="profile-main-card card border-0 shadow-sm">
 				{# Profile Picture Section #}
 				<div class="profile-picture-section">
-					{% if user.profilePicture %}
-						<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="Profile picture" class="profile-picture">
-					{% else %}
-						<div class="profile-picture-placeholder">
-							{{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+					{% if app.user and app.user.id == user.id %}
+						<div class="profile-picture-wrapper" data-bs-toggle="modal" data-bs-target="#changeProfilePicModal">
+							{% if user.profilePicture %}
+								<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="Profile picture" class="profile-picture">
+							{% else %}
+								<div class="profile-picture-placeholder">
+									{{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+								</div>
+							{% endif %}
+							<div class="profile-picture-overlay">
+								<i class="fas fa-camera"></i>
+							</div>
 						</div>
+					{% else %}
+						{% if user.profilePicture %}
+							<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="Profile picture" class="profile-picture">
+						{% else %}
+							<div class="profile-picture-placeholder">
+								{{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+							</div>
+						{% endif %}
 					{% endif %}
 				</div>
 
@@ -73,4 +88,33 @@
 			</div>
 		</div>
 	</div>
+
+	{% if app.user and app.user.id == user.id %}
+		{# Profile Picture Change Modal #}
+		<div class="modal fade" id="changeProfilePicModal" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Change Profile Picture</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						{{ form_start(profile_picture_form, {'attr': {'id': 'profile-picture-form'}}) }}
+						<div class="mb-3">
+							{{ form_widget(profile_picture_form.profilePictureFile, {
+									'attr': {
+										'class': 'form-control',
+										'accept': 'image/*'
+									}
+								}) }}
+						</div>
+						<div class="d-grid">
+							<button type="submit" class="btn btn-gradient">Save Changes</button>
+						</div>
+						{{ form_end(profile_picture_form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}
