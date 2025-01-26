@@ -1,47 +1,56 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
 	<div class="container">
 		<div class="d-flex justify-content-between align-items-center w-100">
 			<h1>
 				{% include 'components/_app_name.html.twig' %}
 			</h1>
-			<div class="ms-auto d-flex align-items-center">
-				<a href="{{ path('post_index') }}" class="me-3 text-decoration-none">
+			<div class="ms-auto d-flex align-items-center gap-4">
+				<a href="{{ path('post_index') }}" class="nav-icon-link">
 					<i class="fa-solid fa-house gradient-text"></i>
 				</a>
-				<a href="{{ path('post_index') }}" class="me-3 text-decoration-none">
-					<i class="fa-solid fa-user gradient-text"></i>
-				</a>
-				<button class="btn p-0 border-0" data-bs-toggle="dropdown" aria-expanded="false">
-					<i class="fa-solid fa-bars gradient-text"></i>
-				</button>
-				<ul class="dropdown-menu dropdown-menu-end ">
 
-					<li>
-						<a class="dropdown-item text-decoration-none" href="#">
-							<i class="fa-solid fa-gear me-2 gradient-text"></i>
+				{# Profile Preview Button #}
+				<div class="dropdown">
+					<button class="btn p-0 border-0 d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false">
+						{% if app.user.profilePicture %}
+							<img src="{{ vich_uploader_asset(app.user, 'profilePictureFile') }}" alt="Profile" class="nav-profile-pic">
+						{% else %}
+							<div class="nav-profile-placeholder">
+								{{ app.user.firstName|first|upper }}{{ app.user.lastName|first|upper }}
+							</div>
+						{% endif %}
+						<span class="d-none d-md-inline gradient-text">{{ app.user.firstName }}</span>
+						<i class="fa-solid fa-bars gradient-text ms-2 nav-icon"></i>
+					</button>
 
-							<span class="gradient-text">Settings</span>
-
-						</a>
-					</li>
-					<li>
-						<a class="dropdown-item text-decoration-none" href="#">
-							<i class="fa-solid fa-heart me-2 gradient-text"></i>
-
-							<span class="gradient-text">Donate</span>
-
-						</a>
-					</li>
-					<li><hr class="dropdown-divider"></li>
-					<li>
-						<a class="dropdown-item text-decoration-none" href="{{ path('app_logout') }}">
-							<i class="fa-solid fa-right-from-bracket me-2 gradient-text"></i>
-
-							<span class="gradient-text">Log out</span>
-
-						</a>
-					</li>
-				</ul>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" href="{{ path('app_profile') }}">
+								<i class="fa-solid fa-user me-2 gradient-text"></i>
+								<span class="gradient-text">Profile</span>
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="fa-solid fa-gear me-2 gradient-text"></i>
+								<span class="gradient-text">Settings</span>
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="fa-solid fa-heart me-2 gradient-text"></i>
+								<span class="gradient-text">Donate</span>
+							</a>
+						</li>
+						<li><hr class="dropdown-divider"></li>
+						<li>
+							<a class="dropdown-item" href="{{ path('app_logout') }}">
+								<i class="fa-solid fa-right-from-bracket me-2 gradient-text"></i>
+								<span class="gradient-text">Log out</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

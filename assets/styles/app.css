@@ -348,7 +348,6 @@ a {
 /* Post Image Hover Effect */
 .post-image-container {
     position: relative;
-    cursor: pointer;
 }
 
 .post-image-overlay {
@@ -375,4 +374,71 @@ a {
 }
 
 /* Remove all modal-related styles */
+
+/* Navbar Styles */
+.navbar {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.nav-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.nav-icon-link:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.nav-icon-link i {
+    font-size: 1.5rem;
+}
+
+.nav-icon {
+    font-size: 1.3rem;
+}
+
+/* Navbar Profile Picture */
+.nav-profile-pic,
+.nav-profile-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-profile-placeholder {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+}
 
