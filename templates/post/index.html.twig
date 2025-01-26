@@ -4,5 +4,30 @@
 {% endblock %}
 
 {% block content %}
+	<div class="post-form">
+		<h2>Create New Post</h2>
+		{{ form(form) }}
+		</div>
 
-	{{ form(form) }}{% endblock %}
+		<div class="posts-list">
+			<h2>All Posts</h2>
+			{% if posts|length > 0 %}
+				{% for post in posts %}
+					<div class="post">
+						<p>{{ post.text }}</p>
+						{% if post.imageName %}
+							<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" style="max-width: 300px">
+						{% endif %}
+						<div class="actions">
+							<a href="{{ path('post_show', {'id': post.id}) }}">View</a>
+							<a href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
+							<a href="{{ path('post_delete', {'id': post.id}) }}" onclick="return confirm('Are you sure?')">Delete</a>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<p>No posts found.</p>
+			{% endif %}
+		</div>
+
+	{% endblock %}

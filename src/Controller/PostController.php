@@ -17,25 +17,26 @@ final class PostController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $post = new Post();
-
-
         $form = $this->createForm(PostType::class, $post);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($post);
             $entityManager->flush();
+            $errors = $validator->validate($post);
+            if (count($errors) > 0) {
+                return new Response((string) $errors, 400);
+            }
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
 
-        $errors = $validator->validate($post);
-        if (count($errors) > 0) {
-            return new Response((string) $errors, 400);
-        }
+        // Fetch all posts
+        $posts = $entityManager->getRepository(Post::class)->findAll();
 
-
-        return $this->render('post/index.html.twig', ['form' => $form->createView()]);
+        return $this->render('post/index.html.twig', [
+            'form' => $form->createView(),
+            'posts' => $posts
+        ]);
     }
 
 

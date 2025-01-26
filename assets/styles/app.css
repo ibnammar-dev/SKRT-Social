@@ -6,3 +6,18 @@
     color: transparent;
     display: inline-block;
 }
+
+.post-form {
+				margin-bottom: 2rem;
+			}
+			.posts-list .post {
+				margin-bottom: 1rem;
+				padding: 1rem;
+				border: 1px solid #ddd;
+			}
+			.posts-list .actions {
+				margin-top: 0.5rem;
+			}
+			.posts-list .actions a {
+				margin-right: 1rem;
+			}
