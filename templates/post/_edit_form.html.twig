@@ -1,0 +1,40 @@
+<div class="edit-post-form p-2">
+	<div class="mb-3">
+		<textarea class="form-control border-0" rows="4" placeholder="What's on your mind?" style="font-size: 1rem; resize: none;">{{ post.text }}</textarea>
+	</div>
+
+	{% if post.imageName %}
+		<div class="current-image mb-3 position-relative">
+			<img src="{{ vich_uploader_asset(post, 'imageFile') }}" class="rounded img-fluid" style="max-height: 300px; width: 100%; object-fit: cover;">
+			<button class="btn-remove-image" onclick="removeImage({{ post.id }})">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+	{% else %}
+		<div id="editImagePreview-{{ post.id }}" class="mb-3 d-none">
+			<div class="position-relative">
+				<img src="" class="rounded img-fluid" style="max-height: 300px; width: 100%; object-fit: cover;">
+				<button class="btn-remove-image" onclick="removeEditImage({{ post.id }})">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+		</div>
+
+		<div id="uploadArea-{{ post.id }}" class="upload-area mb-3" onclick="triggerEditImageUpload({{ post.id }})">
+			<div class="upload-area-inner">
+				<div class="upload-area-content text-center">
+					<i class="fas fa-image mb-2"></i>
+					<p class="mb-0">Click to add an image</p>
+				</div>
+			</div>
+			<input type="file" id="editImageInput-{{ post.id }}" accept="image/*" style="display: none;" onchange="handleEditImageUpload(this, {{ post.id }})">
+		</div>
+	{% endif %}
+
+	<div class="d-flex justify-content-end gap-2">
+		<button class="btn btn-light" onclick="cancelEdit({{ post.id }})">Cancel</button>
+		<button class="btn btn-gradient" onclick="saveEdit({{ post.id }})">
+			Save Changes
+		</button>
+	</div>
+</div>

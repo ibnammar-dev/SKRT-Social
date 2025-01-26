@@ -1,36 +1,60 @@
-<div class="card shadow-sm mb-4 post-card">
+<div class="card shadow-sm mb-4 post-card" id="post-{{ post.id }}">
 	<div
 		class="card-body p-4">
-		{# Post Header #}
-		<div class="d-flex align-items-center mb-3">
-			{% embed 'components/user_preview.html.twig' with {user: post.user} %}
-				{% block trigger %}
-					<div class="d-flex align-items-center">
-						{% if post.user.profilePicture %}
-							<img src="{{ vich_uploader_asset(post.user, 'profilePictureFile') }}" alt="Profile picture" class="post-author-avatar">
-						{% else %}
-							<div class="post-author-avatar-placeholder">
-								{{ post.user.firstName|first|upper }}{{ post.user.lastName|first|upper }}
+		{# Post Header with Context Menu #}
+		<div class="d-flex align-items-center mb-3 justify-content-between">
+			<div class="d-flex align-items-center">
+				{% embed 'components/user_preview.html.twig' with {user: post.user} %}
+					{% block trigger %}
+						<div class="d-flex align-items-center">
+							{% if post.user.profilePicture %}
+								<img src="{{ vich_uploader_asset(post.user, 'profilePictureFile') }}" alt="Profile picture" class="post-author-avatar">
+							{% else %}
+								<div class="post-author-avatar-placeholder">
+									{{ post.user.firstName|first|upper }}{{ post.user.lastName|first|upper }}
+								</div>
+							{% endif %}
+							<div class="ms-3">
+								<h6 class="mb-0">{{ post.user.firstName }}
+									{{ post.user.lastName }}</h6>
+								<small class="text-muted">{{ post.createdAt|ago }}</small>
 							</div>
-						{% endif %}
-						<div class="ms-3">
-							<h6 class="mb-0">{{ post.user.firstName }}
-								{{ post.user.lastName }}</h6>
-							<small class="text-muted">{{ post.createdAt|ago }}</small>
 						</div>
-					</div>
-				{% endblock %}
-			{% endembed %}
+					{% endblock %}
+				{% endembed %}
+			</div>
+
+			{% if app.user == post.user %}
+				<div class="dropdown">
+					<button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
+						<i class="fas fa-ellipsis-h"></i>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<button class="dropdown-item" onclick="editPost({{ post.id }})">
+								<i class="fas fa-edit me-2"></i>Edit
+							</button>
+						</li>
+						<li>
+							<button class="dropdown-item text-danger" onclick="confirmDelete({{ post.id }})">
+								<i class="fas fa-trash me-2"></i>Delete
+							</button>
+						</li>
+					</ul>
+				</div>
+			{% endif %}
 		</div>
 
 		{# Post Content #}
-		<p class="card-text mb-3">{{ post.text }}</p>
+		<div class="post-content-{{ post.id }}">
+			<p class="card-text mb-3">{{ post.text }}</p>
 
-		{# Post Image #}
-		{% if post.imageName %}
-			<div class="post-image-container">
-				<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" class="post-image">
-			</div>
-		{% endif %}
+			{# Post Image #}
+			{% if post.imageName %}
+				<div class="post-image-container">
+					<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" class="post-image">
+				</div>
+			{% endif %}
+		</div>
 	</div>
 </div>

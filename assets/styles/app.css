@@ -1,5 +1,4 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
-
+²
 :root {
     /* Define theme colors as CSS variables */
     --primary-gradient-start: #ff6b6b;
@@ -306,6 +305,7 @@ a {
 .post-card {
     border-radius: 1rem;  /* Softer corners */
     overflow: hidden;  /* Ensure content respects border radius */
+    transition: all 0.3s ease;
 }
 
 /* Post Image */
@@ -488,5 +488,14 @@ a {
     justify-content: center;
     font-size: 1.2rem;
     font-weight: 500;
+}
+
+.edit-post-form {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 

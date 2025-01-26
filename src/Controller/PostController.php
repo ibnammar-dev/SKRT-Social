@@ -10,9 +10,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Form\Type\PostType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 final class PostController extends AbstractController
 {
+    private $csrfTokenManager;
+
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager)
+    {
+        $this->csrfTokenManager = $csrfTokenManager;
+    }
+
     #[Route('/', name: 'post_index')]
     public function index(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
@@ -108,5 +117,103 @@ final class PostController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
         return new Response('Post deleted');
+    }
+
+    #[Route('/post/{id}/edit-form', name: 'post_edit_form')]
+    public function editForm(Post $post): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $post);
+        return $this->render('post/_edit_form.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    #[Route('/post/{id}/content', name: 'post_content')]
+    public function content(Post $post): Response
+    {
+        return $this->render('post/_content.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    #[Route('/post/{id}/edit', name: 'post_edit', methods: ['POST'])]
+    public function edit(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $post);
+
+        $token = $request->headers->get('X-CSRF-TOKEN');
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete-item', $token))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token');
+        }
+
+        $post->setText($request->request->get('text'));
+
+        // Handle image upload if present
+        if ($request->files->has('image')) {
+            $post->setImageFile($request->files->get('image'));
+        }
+
+        $entityManager->flush();
+
+        return $this->render('post/_content.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    #[Route('/post/{id}/delete', name: 'post_delete', methods: ['DELETE'])]
+    public function deletePost(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('delete', $post);
+
+        $token = $request->headers->get('X-CSRF-TOKEN');
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete-item', $token))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token');
+        }
+
+        $entityManager->remove($post);
+        $entityManager->flush();
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/post/create', name: 'post_create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $post = new Post();
+        $post->setUser($this->getUser());
+        $post->setText($request->request->get('text'));
+
+        // Handle image upload if present
+        if ($request->files->has('image')) {
+            $post->setImageFile($request->files->get('image'));
+        }
+
+        $entityManager->persist($post);
+        $entityManager->flush();
+
+        // Return the new post HTML
+        return $this->render('post/_post.html.twig', [
+            'post' => $post
+        ]);
+    }
+
+    #[Route('/post/{id}/remove-image', name: 'post_remove_image', methods: ['POST'])]
+    public function removeImage(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $post);
+
+        $token = $request->headers->get('X-CSRF-TOKEN');
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete-item', $token))) {
+            throw $this->createAccessDeniedException('Invalid CSRF token');
+        }
+
+        // Remove the image
+        $post->setImageName(null);
+        $post->setImageFile(null);
+        $entityManager->flush();
+
+        return $this->render('post/_edit_form.html.twig', [
+            'post' => $post
+        ]);
     }
 }

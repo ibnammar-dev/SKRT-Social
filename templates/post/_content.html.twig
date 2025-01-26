@@ -1,0 +1,8 @@
+<p class="card-text mb-3">{{ post.text }}</p>
+
+{# Post Image #}
+{% if post.imageName %}
+	<div class="post-image-container">
+		<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" class="post-image">
+	</div>
+{% endif %}
