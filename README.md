@@ -1,89 +1,48 @@
-# 🎧 Podtasty - Social Media for Podcast Lovers
+# 🚀 SKRT Social
 
-Welcome to Podtasty, where podcast enthusiasts unite! Share your favorite podcast moments, discuss episodes, and connect with fellow listeners in a vibrant community.
+A modern social media platform for sharing moments and connecting with friends. ✨
 
-## 🚀 Features
+## 🤔 What is SKRT Social?
 
-- User authentication system
-- Post creation and sharing
-- Image upload capabilities
-- Modern, responsive UI
-- Secure user management
-- Interactive feed system
+SKRT Social is a minimalist social platform focused on meaningful interactions. Share updates, photos, and stay connected with your community. 🌟
 
-## 🛠 Tech Stack
+## 🏁 Getting Started
 
-- Symfony 6.4
-- PHP 8.2+
-- MySQL/MariaDB
-- Bootstrap 5
-- Webpack Encore
-- VichUploader Bundle
-
-## 🏃‍♂️ Quick Start
-
-### Prerequisites
-
+### 📋 Prerequisites
 - PHP 8.2 or higher
 - Composer
-- Node.js and npm
+- Symfony CLI
 - MySQL/MariaDB
-- Symfony CLI (recommended)
+- Git
 
-### Installation
+### 🛠️ Installation
 
-1. Clone the repository
-```bash
-git clone https://github.com/yourusername/podtasty.git
-cd podtasty
-```
+1. Open your terminal and clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/skrt-social.git
+   cd skrt-social
+   ```
 
-2. Install PHP dependencies
-```bash
-composer install
-```
+2. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
 
-3. Install JavaScript dependencies
-```bash
-npm install
-```
+3. Configure your environment:
+   ```bash
+   cp .env .env.local
+   ```
+   Then edit `.env.local` with your database credentials
 
-4. Configure your database in `.env.local`
-```bash
-DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/podtasty?serverVersion=8.0"
-```
+4. Create and setup the database:
+   ```bash
+   php bin/console doctrine:database:create
+   php bin/console doctrine:migrations:migrate
+   ```
 
-5. Create database and run migrations
-```bash
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-```
+5. Start the Symfony development server:
+   ```bash
+   symfony server:start
+   ```
 
-6. Build assets
-```bash
-npm run build
-```
-
-7. Start the Symfony development server
-```bash
-symfony serve -d
-```
-
-Visit `http://localhost:8000` and you're ready to go! 🎉
-
-## 🎯 Contributing
-
-Contributions are welcome! Feel free to submit a Pull Request.
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🎭 And finally... a developer joke
-
-Why do podcast developers prefer dark mode?
-
-Because light attracts bugs! 🪲
-
----
-Made with ❤️ and probably too much coffee ☕ 
+6. Visit `http://localhost:8000` in your browser 🎉
