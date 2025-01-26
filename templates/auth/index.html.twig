@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registration
+{% endblock %}
+
+{% block content %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h2 class="text-center">Register</h2>
+					</div>
+					<div class="card-body">
+						{% for flash_message in app.flashes('success') %}
+							<div class="alert alert-success">
+								{{ flash_message }}
+							</div>
+						{% endfor %}
+
+						{{ form_start(registration_form) }}
+						<div class="mb-3">
+							{{ form_label(registration_form.email) }}
+							{{ form_widget(registration_form.email, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(registration_form.email) }}
+						</div>
+
+						<div class="mb-3">
+							{{ form_label(registration_form.password) }}
+							{{ form_widget(registration_form.password, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(registration_form.password) }}
+						</div>
+
+						<div class="mb-3">
+							{{ form_label(registration_form.firstName) }}
+							{{ form_widget(registration_form.firstName, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(registration_form.firstName) }}
+						</div>
+
+						<div class="mb-3">
+							{{ form_label(registration_form.lastName) }}
+							{{ form_widget(registration_form.lastName, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(registration_form.lastName) }}
+						</div>
+
+						<div class="mb-3">
+							{{ form_label(registration_form.birthday) }}
+							{{ form_widget(registration_form.birthday, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(registration_form.birthday) }}
+						</div>
+
+						{{ form_widget(registration_form.register, {'attr': {'class': 'btn btn-primary w-100'}}) }}
+						{{ form_end(registration_form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
