@@ -6,9 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -39,6 +43,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthday = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profilePicture = null;
+
+    #[Vich\UploadableField(mapping: 'profile_pictures', fileNameProperty: 'profilePicture')]
+    #[Ignore]
+    private ?File $profilePictureFile = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -146,5 +160,84 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->birthday = $birthday;
         return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    #[Ignore]
+    public function getProfilePictureFile(): ?File
+    {
+        return $this->profilePictureFile;
+    }
+
+    /**
+     * @param File|null $profilePictureFile
+     */
+    public function setProfilePictureFile(?File $profilePictureFile = null): void
+    {
+        $this->profilePictureFile = $profilePictureFile;
+
+        if (null !== $profilePictureFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'password' => $this->password,
+            'roles' => $this->roles,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'birthday' => $this->birthday,
+            'profilePicture' => $this->profilePicture,
+            'updatedAt' => $this->updatedAt,
+        ];
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->email = $data['email'];
+        $this->password = $data['password'];
+        $this->roles = $data['roles'];
+        $this->firstName = $data['firstName'];
+        $this->lastName = $data['lastName'];
+        $this->birthday = $data['birthday'];
+        $this->profilePicture = $data['profilePicture'];
+        $this->updatedAt = $data['updatedAt'];
     }
 }

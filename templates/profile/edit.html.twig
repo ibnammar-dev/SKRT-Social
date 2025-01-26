@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+	<div class="container mt-4">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h2 class="card-title mb-4">Edit Profile</h2>
+
+						{{ form_start(form) }}
+						<div class="mb-3">
+							{% if app.user.profilePicture %}
+								<div class="mb-3">
+									<img src="{{ vich_uploader_asset(app.user, 'profilePictureFile') }}" alt="Current profile picture" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+								</div>
+							{% endif %}
+
+							{{ form_row(form.profilePictureFile) }}
+						</div>
+
+						<div class="d-grid gap-2">
+							<button type="submit" class="btn btn-gradient">Save Changes</button>
+						</div>
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

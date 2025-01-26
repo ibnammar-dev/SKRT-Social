@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PostController extends AbstractController
 {
-    #[Route('/post', name: 'post_index')]
+    #[Route('/', name: 'post_index')]
     public function index(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $post = new Post();

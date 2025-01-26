@@ -92,3 +92,55 @@ a {
 	color: var(--primary-color);
 }
 
+/* Profile styles */
+.profile-header {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Profile card hover effects */
+.profile-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile stats */
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+}
+
+.profile-stat-item {
+    text-align: center;
+}
+
+.profile-stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.profile-stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
