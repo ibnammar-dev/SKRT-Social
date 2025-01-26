@@ -1,0 +1,31 @@
+<div class="user-preview-wrapper">
+	<div class="user-preview-trigger">
+		{{ block('trigger') }}
+	</div>
+
+	<div class="user-preview-popup">
+		<div
+			class="user-preview-content">
+			{# Header with picture and name #}
+			<div class="d-flex align-items-center mb-3">
+				{% if user.profilePicture %}
+					<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="Profile" class="user-preview-pic">
+				{% else %}
+					<div class="user-preview-placeholder">
+						{{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+					</div>
+				{% endif %}
+				<div class="ms-3">
+					<h6 class="mb-0 fw-bold">{{ user.firstName }}
+						{{ user.lastName }}</h6>
+					<small class="text-muted">@{{ user.email|split('@')[0] }}</small>
+				</div>
+			</div>
+
+			{# Action button #}
+			<a href="{{ path('app_profile', {id: user.id}) }}" class="btn btn-gradient w-100">
+				View Profile
+			</a>
+		</div>
+	</div>
+</div>

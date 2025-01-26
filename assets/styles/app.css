@@ -442,3 +442,51 @@ a {
     margin: 0.5rem 0;
 }
 
+/* User Preview Component */
+.user-preview-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.user-preview-trigger {
+    cursor: pointer;
+}
+
+.user-preview-popup {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 1rem;
+    min-width: 240px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+}
+
+.user-preview-wrapper:hover .user-preview-popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-preview-pic,
+.user-preview-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-preview-placeholder {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
