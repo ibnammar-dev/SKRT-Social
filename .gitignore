@@ -30,3 +30,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+# Ignore public images for posts and profiles
+public/images/posts/
+public/images/profiles/
