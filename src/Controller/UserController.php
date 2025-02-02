@@ -43,4 +43,22 @@ class UserController extends AbstractController
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
+
+    #[Route('/user/{id}/impersonate', name: 'user_impersonate')]
+    public function impersonate(User $user): Response
+    {
+        // Only admin can impersonate users
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        // Can't impersonate yourself
+        if ($user === $this->getUser()) {
+            throw $this->createAccessDeniedException('You cannot impersonate yourself');
+        }
+
+        // Set the token for impersonation
+        $token = sprintf('_switch_user=%s', $user->getEmail());
+
+        // Redirect to homepage with impersonation token
+        return $this->redirect('/?' . $token);
+    }
 }
