@@ -29,17 +29,6 @@ final class PostController extends AbstractController
         $post->setUser($this->getUser());
 
         $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($post);
-            $entityManager->flush();
-            $errors = $validator->validate($post);
-            if (count($errors) > 0) {
-                return new Response((string) $errors, 400);
-            }
-            return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
-        }
 
         // Fetch all posts ordered by creation date (newest first)
         $posts = $entityManager
@@ -52,6 +41,29 @@ final class PostController extends AbstractController
         ]);
     }
 
+    #[Route('/post/create', name: 'post_create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
+    {
+        $post = new Post();
+        $post->setUser($this->getUser());
+
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            // Return the new post HTML using the consistent component
+            return $this->render('components/post_card.html.twig', [
+                'post' => $post
+            ]);
+        }
+
+        // If form is not valid, return error response
+        $errors = $validator->validate($post);
+        return new Response((string) $errors, Response::HTTP_BAD_REQUEST);
+    }
 
     #[Route('/post/createStatic', name: 'create_post')]
     public function createPost(EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
@@ -155,7 +167,8 @@ final class PostController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->render('post/_content.html.twig', [
+        // Return the updated post using the consistent component
+        return $this->render('components/post_card.html.twig', [
             'post' => $post
         ]);
     }
@@ -174,27 +187,6 @@ final class PostController extends AbstractController
         $entityManager->flush();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    #[Route('/post/create', name: 'post_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $post = new Post();
-        $post->setUser($this->getUser());
-        $post->setText($request->request->get('text'));
-
-        // Handle image upload if present
-        if ($request->files->has('image')) {
-            $post->setImageFile($request->files->get('image'));
-        }
-
-        $entityManager->persist($post);
-        $entityManager->flush();
-
-        // Return the new post HTML
-        return $this->render('post/_post.html.twig', [
-            'post' => $post
-        ]);
     }
 
     #[Route('/post/{id}/remove-image', name: 'post_remove_image', methods: ['POST'])]

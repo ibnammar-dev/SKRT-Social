@@ -1,33 +1,102 @@
-// Post creation functionality
-window.createPost = function() {
-    const content = document.querySelector('.create-post-form textarea').value;
-    const imageInput = document.querySelector('#imageInput');
-    
-    const formData = new FormData();
-    formData.append('text', content);
-    if (imageInput.files[0]) {
-        formData.append('image', imageInput.files[0]);
-    }
-    
-    fetch('/post/create', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: formData
-    })
-    .then(response => response.text())
-    .then(html => {
-        // Insert new post at the top of the posts list
-        const postsContainer = document.querySelector('.posts-container');
-        postsContainer.insertAdjacentHTML('afterbegin', html);
-        
-        // Clear form
-        document.querySelector('.create-post-form textarea').value = '';
-        document.querySelector('#imagePreview').classList.add('d-none');
-        imageInput.value = '';
-    });
+// Toast notification function
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification slide-in';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i>
+            ${message}
+        </div>
+    `;
+    document.body.appendChild(toast);
+
+    // Trigger reflow for animation
+    toast.offsetHeight;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
+
+// Post creation functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const createPostForm = document.querySelector('.js-create-post-form');
+    if (createPostForm) {
+        createPostForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            // Disable submit button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Posting...';
+            
+            fetch(this.dataset.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                // Create a temporary container for the new post
+                const tempContainer = document.createElement('div');
+                tempContainer.innerHTML = html;
+                const newPost = tempContainer.firstElementChild;
+                
+                // Add initial styles for animation
+                newPost.style.opacity = '0';
+                newPost.style.transform = 'translateY(-20px)';
+                newPost.style.transition = 'all 0.5s ease-out';
+                
+                // Insert the new post at the top
+                const postsContainer = document.querySelector('.posts-container');
+                
+                // Remove the "no posts" message if it exists
+                const noPostsMessage = postsContainer.querySelector('.text-muted');
+                if (noPostsMessage) {
+                    noPostsMessage.remove();
+                }
+                
+                // Add the new post
+                postsContainer.insertBefore(newPost, postsContainer.firstChild);
+                
+                // Trigger reflow and add animation
+                newPost.offsetHeight;
+                newPost.style.opacity = '1';
+                newPost.style.transform = 'translateY(0)';
+                
+                // Clear form
+                createPostForm.reset();
+                const previewContainer = document.querySelector('#previewContainer');
+                if (previewContainer) {
+                    previewContainer.classList.add('d-none');
+                }
+                
+                // Show success toast
+                showToast('Post created successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred while creating the post. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Re-enable submit button and restore original text
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Post';
+            });
+        });
+    }
+});
 
 // Post editing functionality
 window.editPost = function(postId) {

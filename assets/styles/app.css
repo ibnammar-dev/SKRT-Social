@@ -499,3 +499,50 @@ a {
     to { opacity: 1; }
 }
 
+/* Toast Notification */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: white;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(120%);
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-notification .toast-content {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.toast-notification i {
+    font-size: 1.25rem;
+}
+
+/* Post Animation */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.posts-container > .card {
+    will-change: transform, opacity;
+}
+
