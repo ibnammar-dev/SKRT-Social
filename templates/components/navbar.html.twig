@@ -30,6 +30,14 @@
 								<span class="gradient-text">Profile</span>
 							</a>
 						</li>
+						{% if is_granted('ROLE_ADMIN') %}
+							<li>
+								<a class="dropdown-item" href="{{ path('admin_dashboard') }}">
+									<i class="fa-solid fa-gauge me-2 gradient-text"></i>
+									<span class="gradient-text">Admin Dashboard</span>
+								</a>
+							</li>
+						{% endif %}
 						<li>
 							<a class="dropdown-item" href="#">
 								<i class="fa-solid fa-gear me-2 gradient-text"></i>

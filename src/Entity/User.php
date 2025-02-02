@@ -9,10 +9,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[Vich\Uploadable]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -53,6 +56,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
+    private Collection $posts;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->posts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +117,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->roles = $roles;
 
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles(), true);
+    }
+
+    public function makeAdmin(): static
+    {
+        if (!$this->isAdmin()) {
+            $this->roles[] = 'ROLE_ADMIN';
+        }
+        return $this;
+    }
+
+    public function removeAdmin(): static
+    {
+        $this->roles = array_diff($this->roles, ['ROLE_ADMIN']);
         return $this;
     }
 
@@ -207,6 +241,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
     /**
      * @see \Serializable::serialize()
      */
@@ -222,6 +267,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'birthday' => $this->birthday,
             'profilePicture' => $this->profilePicture,
             'updatedAt' => $this->updatedAt,
+            'createdAt' => $this->createdAt,
         ];
     }
 
@@ -239,5 +285,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->birthday = $data['birthday'];
         $this->profilePicture = $data['profilePicture'];
         $this->updatedAt = $data['updatedAt'];
+        $this->createdAt = $data['createdAt'];
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): static
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): static
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
