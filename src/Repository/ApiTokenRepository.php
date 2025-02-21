@@ -26,10 +26,8 @@ class ApiTokenRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->where('t.token = :token')
             ->andWhere('t.expiresAt > :now')
-            ->setParameters([
-                'token' => $token,
-                'now' => new \DateTimeImmutable()
-            ])
+            ->setParameter('token', $token)
+            ->setParameter('now', new \DateTimeImmutable())
             ->getQuery()
             ->getOneOrNullResult();
     }

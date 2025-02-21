@@ -32,15 +32,14 @@ class PostController extends AbstractApiController
         $data = array_map(function (Post $post) {
             return [
                 'id' => $post->getId(),
-                'title' => $post->getTitle(),
-                'content' => $post->getContent(),
+                'text' => $post->getText(),
+                'imageName' => $post->getImageName(),
                 'author' => $post->getUser() ? [
                     'id' => $post->getUser()->getId(),
                     'firstName' => $post->getUser()->getFirstName(),
                     'lastName' => $post->getUser()->getLastName()
                 ] : null,
-                'createdAt' => $post->getCreatedAt()->format('c'),
-                'updatedAt' => $post->getUpdatedAt()->format('c')
+                'createdAt' => $post->getCreatedAt()->format('c')
             ];
         }, $posts);
 
@@ -60,15 +59,14 @@ class PostController extends AbstractApiController
     {
         return $this->createApiResponse([
             'id' => $post->getId(),
-            'title' => $post->getTitle(),
-            'content' => $post->getContent(),
+            'text' => $post->getText(),
+            'imageName' => $post->getImageName(),
             'author' => $post->getUser() ? [
                 'id' => $post->getUser()->getId(),
                 'firstName' => $post->getUser()->getFirstName(),
                 'lastName' => $post->getUser()->getLastName()
             ] : null,
-            'createdAt' => $post->getCreatedAt()->format('c'),
-            'updatedAt' => $post->getUpdatedAt()->format('c')
+            'createdAt' => $post->getCreatedAt()->format('c')
         ]);
     }
 
@@ -78,8 +76,7 @@ class PostController extends AbstractApiController
         $data = json_decode($request->getContent(), true);
 
         $post = new Post();
-        $post->setTitle($data['title'] ?? '');
-        $post->setContent($data['content'] ?? '');
+        $post->setText($data['text'] ?? '');
         $post->setUser($this->getUser());
 
         $errors = $this->validator->validate($post);
@@ -96,8 +93,7 @@ class PostController extends AbstractApiController
 
         return $this->createApiResponse([
             'id' => $post->getId(),
-            'title' => $post->getTitle(),
-            'content' => $post->getContent()
+            'text' => $post->getText()
         ], 'Post created successfully', Response::HTTP_CREATED);
     }
 
@@ -109,11 +105,8 @@ class PostController extends AbstractApiController
 
         $data = json_decode($request->getContent(), true);
 
-        if (isset($data['title'])) {
-            $post->setTitle($data['title']);
-        }
-        if (isset($data['content'])) {
-            $post->setContent($data['content']);
+        if (isset($data['text'])) {
+            $post->setText($data['text']);
         }
 
         $errors = $this->validator->validate($post);
@@ -129,8 +122,7 @@ class PostController extends AbstractApiController
 
         return $this->createApiResponse([
             'id' => $post->getId(),
-            'title' => $post->getTitle(),
-            'content' => $post->getContent()
+            'text' => $post->getText()
         ], 'Post updated successfully');
     }
 
