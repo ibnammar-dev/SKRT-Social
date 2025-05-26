@@ -294,6 +294,31 @@
 				}
 			],
 			"description": "User management endpoints"
+		},
+		{
+			"name": "Media",
+			"item": [
+				{
+					"name": "Get Image",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-TOKEN",
+								"value": "{{api_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/media/images/{{image_name}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "media", "images", "{{image_name}}"]
+						},
+						"description": "Download an image by its name"
+					},
+					"response": []
+				}
+			],
+			"description": "Media handling endpoints"
 		}
 	],
 	"event": [

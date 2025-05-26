@@ -8,8 +8,10 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        options:
+            1002: "SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'))"
     orm:
-        auto_generate_proxy_classes: true
+        auto_generate_proxy_classes: '%kernel.debug%'
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true
         validate_xml_mapping: true
@@ -17,6 +19,9 @@ doctrine:
         identity_generation_preferences:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
+        dql:
+            string_functions:
+                DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
         mappings:
             App:
                 type: attribute
@@ -44,6 +49,25 @@ when@prod:
             result_cache_driver:
                 type: pool
                 pool: doctrine.result_cache_pool
+            metadata_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            second_level_cache:
+                enabled: true
+                region_lifetime: 3600
+                region_lock_lifetime: 60
+                log_enabled: true
+                regions:
+                    query_cache_region:
+                        lifetime: 3600
+                        cache_driver:
+                            type: pool
+                            pool: doctrine.result_cache_pool
+                    entity_cache_region:
+                        lifetime: 3600
+                        cache_driver:
+                            type: pool
+                            pool: doctrine.result_cache_pool
 
     framework:
         cache:

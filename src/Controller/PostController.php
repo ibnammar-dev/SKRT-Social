@@ -69,15 +69,10 @@ final class PostController extends AbstractController
     public function createPost(EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $post = new Post();
-        //$post->setText('At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium ');
         $post->setText(10);
 
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
         $entityManager->persist($post);
-
-        // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
-
 
         $errors = $validator->validate($post);
         if (count($errors) > 0) {
@@ -86,7 +81,6 @@ final class PostController extends AbstractController
 
         return new Response('Saved new post with id ' . $post->getId());
     }
-
 
     #[Route('/post/{id}', name: 'post_show')]
     public function show(EntityManagerInterface $entityManager, int $id): Response
@@ -98,10 +92,6 @@ final class PostController extends AbstractController
         }
 
         return new Response('Check out this great post: ' . $post->getText());
-
-        // or render a template
-        // in the template, print things with {{ product.name }}
-        // return $this->render('product/show.html.twig', ['product' => $product]);
     }
 
     #[Route('/post/edit/{id}', name: 'post_edit')]
@@ -120,7 +110,6 @@ final class PostController extends AbstractController
             'id' => $post->getId()
         ]);
     }
-
 
     #[Route('/post/delete/{id}', name: 'post_delete')]
     public function delete(EntityManagerInterface $entityManager, int $id): Response
