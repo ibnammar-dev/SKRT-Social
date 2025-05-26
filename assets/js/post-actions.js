@@ -137,7 +137,13 @@ window.saveEdit = function(postId) {
     })
     .then(response => response.text())
     .then(html => {
-        document.querySelector(`.post-content-${postId}`).innerHTML = html;
+        const contentArea = document.querySelector(`.post-content-${postId}`);
+        contentArea.innerHTML = html;
+        showToast('Post updated successfully');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Failed to update post', 'error');
     });
 }
 

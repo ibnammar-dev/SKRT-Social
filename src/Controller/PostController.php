@@ -167,8 +167,8 @@ final class PostController extends AbstractController
 
         $entityManager->flush();
 
-        // Return the updated post using the consistent component
-        return $this->render('components/post_card.html.twig', [
+        // Return just the content part
+        return $this->render('post/_content.html.twig', [
             'post' => $post
         ]);
     }

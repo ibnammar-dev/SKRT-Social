@@ -1,217 +1,219 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Users Management{% endblock %}
+{% block title %}Users Management
+{% endblock %}
 
 {% block content %}
-{% if is_granted('IS_IMPERSONATOR') %}
-    <div class="alert alert-warning sticky-top d-flex justify-content-between align-items-center mb-0 rounded-0">
-        <div>
-            <i class="fas fa-user-secret me-2"></i>
-            You are currently connected as {{ app.user.firstName }} {{ app.user.lastName }}
-        </div>
-        <a href="{{ path('app_homepage', {'_switch_user': '_exit'}) }}" class="btn btn-warning btn-sm">
-            <i class="fas fa-sign-out-alt me-2"></i>Exit Impersonation
-        </a>
-    </div>
-{% endif %}
+	{% if is_granted('IS_IMPERSONATOR') %}
+		<div class="alert alert-warning sticky-top d-flex justify-content-between align-items-center mb-0 rounded-0">
+			<div>
+				<i class="fas fa-user-secret me-2"></i>
+				You are currently connected as
+				{{ app.user.firstName }}
+				{{ app.user.lastName }}
+			</div>
+			<a href="{{ path('app_homepage', {'_switch_user': '_exit'}) }}" class="btn btn-warning btn-sm">
+				<i class="fas fa-sign-out-alt me-2"></i>Exit Impersonation
+			</a>
+		</div>
+	{% endif %}
 
-<div class="container-fluid">
-    <div class="row">
-        {# Sidebar #}
-        <div class="col-md-3 col-lg-2 px-0">
-            <div class="admin-sidebar">
-                <div class="d-flex flex-column">
-                    <a href="{{ path('admin_dashboard') }}" class="admin-nav-link">
-                        <i class="fas fa-tachometer-alt"></i>
-                        Dashboard
-                    </a>
-                    <a href="{{ path('admin_users') }}" class="admin-nav-link active">
-                        <i class="fas fa-users"></i>
-                        Users
-                    </a>
-                    <a href="#" class="admin-nav-link">
-                        <i class="fas fa-newspaper"></i>
-                        Posts
-                    </a>
-                    <a href="#" class="admin-nav-link">
-                        <i class="fas fa-cog"></i>
-                        Settings
-                    </a>
-                </div>
-            </div>
-        </div>
+	<div class="container-fluid">
+		<div
+			class="row">
+			{# Sidebar #}
+			<div class="col-md-3 col-lg-2 px-0">
+				<div class="admin-sidebar">
+					<div class="d-flex flex-column">
+						<a href="{{ path('admin_dashboard') }}" class="admin-nav-link">
+							<i class="fas fa-tachometer-alt"></i>
+							Dashboard
+						</a>
+						<a href="{{ path('admin_users') }}" class="admin-nav-link active">
+							<i class="fas fa-users"></i>
+							Users
+						</a>
+						<a href="#" class="admin-nav-link">
+							<i class="fas fa-newspaper"></i>
+							Posts
+						</a>
+						<a href="#" class="admin-nav-link">
+							<i class="fas fa-cog"></i>
+							Settings
+						</a>
+					</div>
+				</div>
+			</div>
 
-        {# Main Content #}
-        <div class="col-md-9 col-lg-10">
-            <div class="admin-content">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 mb-0">Users Management</h1>
-                    <div class="d-flex gap-2">
-                        <a href="{{ path('post_index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Site
-                        </a>
-                    </div>
-                </div>
+			{# Main Content #}
+			<div class="col-md-9 col-lg-10">
+				<div class="admin-content">
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h1 class="h3 mb-0">Users Management</h1>
+						<div class="d-flex gap-2">
+							<a href="{{ path('post_index') }}" class="btn btn-outline-secondary">
+								<i class="fas fa-arrow-left me-2"></i>Back to Site
+							</a>
+						</div>
+					</div>
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Posts</th>
-                                        <th>Joined</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for user in users %}
-                                        <tr data-user-id="{{ user.id }}">
-                                            <td class="align-middle">
-                                                <div class="d-flex align-items-center">
-                                                    {% if user.profilePicture %}
-                                                        <img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" 
-                                                             alt="{{ user.firstName }}" 
-                                                             class="rounded-circle me-2"
-                                                             width="32" height="32">
-                                                    {% else %}
-                                                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2"
-                                                             style="width: 32px; height: 32px; font-size: 14px;">
-                                                            {{ user.firstName|first|upper }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {{ user.firstName }} {{ user.lastName }}
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">{{ user.email }}</td>
-                                            <td class="align-middle">
-                                                {% if user.isAdmin %}
-                                                    <span class="badge bg-gradient text-white">Admin</span>
-                                                {% else %}
-                                                    <span class="badge bg-secondary">User</span>
-                                                {% endif %}
-                                            </td>
-                                            <td class="align-middle">0</td>
-                                            <td class="align-middle">{{ user.createdAt|date('M d, Y') }}</td>
-                                            <td class="align-middle">
-                                                <div class="btn-group">
-                                                    <a href="{{ path('app_profile', {id: user.id}) }}" 
-                                                       class="btn btn-sm btn-outline-secondary">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                    {% if app.user != user %}
-                                                        <a href="{{ path('user_impersonate', {id: user.id}) }}" 
-                                                           class="btn btn-sm btn-outline-primary"
-                                                           onclick="return confirm('Connect as {{ user.firstName }} {{ user.lastName }}?')">
-                                                            <i class="fas fa-user-secret"></i>
-                                                        </a>
-                                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser({{ user.id }}, '{{ user.firstName }} {{ user.lastName }}')">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    {% endif %}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+					<div class="card shadow-sm">
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Role</th>
+											<th>Posts</th>
+											<th>Joined</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for user in users %}
+											<tr data-user-id="{{ user.id }}">
+												<td class="align-middle">
+													<div class="d-flex align-items-center">
+														{% if user.profilePicture %}
+															<img src="{{ vich_uploader_asset(user, 'profilePictureFile') }}" alt="{{ user.firstName }}" class="rounded-circle me-2" width="32" height="32">
+														{% else %}
+															<div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px; font-size: 14px;">
+																{{ user.firstName|first|upper }}
+															</div>
+														{% endif %}
+														{{ user.firstName }}
+														{{ user.lastName }}
+													</div>
+												</td>
+												<td class="align-middle">{{ user.email }}</td>
+												<td class="align-middle">
+													{% if user.isAdmin %}
+														<span class="badge bg-gradient text-white">Admin</span>
+													{% else %}
+														<span class="badge bg-secondary">User</span>
+													{% endif %}
+												</td>
+												<td class="align-middle">0</td>
+												<td class="align-middle">{{ user.createdAt|date('M d, Y') }}</td>
+												<td class="align-middle">
+													<div class="btn-group">
+														<a href="{{ path('app_profile', {id: user.id}) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-title="View Profile">
+															<i class="fas fa-eye"></i>
+														</a>
+														{% if app.user != user %}
+															<a href="{{ path('user_impersonate', {id: user.id}) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-title="Impersonate User" onclick="return confirm('Connect as {{ user.firstName }} {{ user.lastName }}?')">
+																<i class="fas fa-user-secret"></i>
+															</a>
+															<button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-title="Delete User" onclick="deleteUser({{ user.id }}, '{{ user.firstName }} {{ user.lastName }}')">
+																<i class="fas fa-trash"></i>
+															</button>
+														{% endif %}
+													</div>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-<script>
+	{{ parent() }}
+	<script>
+		// Initialize tooltips
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [... tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
 function deleteUser(userId, userName) {
-    if (confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
-        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        fetch(`/user/${userId}/delete`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': token
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                if (response.status === 403) {
-                    throw new Error('You do not have permission to delete this user');
-                }
-                throw new Error('Failed to delete user');
-            }
-            // Remove the row from the table
-            const row = document.querySelector(`tr[data-user-id="${userId}"]`);
-            row.style.opacity = 0;
-            setTimeout(() => {
-                row.remove();
-                showToast('User deleted successfully');
-            }, 300);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showToast(error.message, 'error');
-        });
-    }
+if (confirm (`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
+const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+fetch (`/user/${userId}/delete`, {
+method: 'DELETE',
+headers: {
+'X-CSRF-TOKEN': token
+}
+}).then(response => {
+if (!response.ok) {
+if (response.status === 403) {
+throw new Error('You do not have permission to delete this user');
+}
+throw new Error('Failed to delete user');
+}
+// Remove the row from the table
+const row = document.querySelector (`tr[data-user-id="${userId}"]`);
+row.style.opacity = 0;
+setTimeout(() => {
+row.remove();
+showToast('User deleted successfully');
+}, 300);
+}).catch(error => {
+console.error('Error:', error);
+showToast(error.message, 'error');
+});
+}
 }
 
 function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification slide-in';
-    toast.innerHTML = `
+const toast = document.createElement('div');
+toast.className = 'toast-notification slide-in';
+toast.innerHTML = `
         <div class="toast-content">
-            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i>
+            <i class="fas ${
+type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'
+} me-2"></i>
             ${message}
         </div>
     `;
-    document.body.appendChild(toast);
+document.body.appendChild(toast);
 
-    // Trigger reflow for animation
-    toast.offsetHeight;
-    toast.classList.add('show');
+// Trigger reflow for animation
+toast.offsetHeight;
+toast.classList.add('show');
 
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+setTimeout(() => {
+toast.classList.remove('show');
+setTimeout(() => toast.remove(), 300);
+}, 3000);
 }
-</script>
+	</script>
 
-<style>
-.toast-notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    color: white;
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateX(120%);
-    transition: all 0.3s ease-in-out;
-    opacity: 0;
-}
+	<style>
+		.toast-notification {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			z-index: 9999;
+			padding: 1rem 1.5rem;
+			border-radius: 8px;
+			color: white;
+			background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			transform: translateX(120%);
+			transition: all 0.3s ease-in-out;
+			opacity: 0;
+		}
 
-.toast-notification.show {
-    transform: translateX(0);
-    opacity: 1;
-}
+		.toast-notification.show {
+			transform: translateX(0);
+			opacity: 1;
+		}
 
-.toast-notification .toast-content {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-}
+		.toast-notification .toast-content {
+			display: flex;
+			align-items: center;
+			font-weight: 500;
+		}
 
-tr {
-    transition: opacity 0.3s ease;
-}
-</style>
-{% endblock %} 
+		tr {
+			transition: opacity 0.3s ease;
+		}
+	</style>
+{% endblock %}
