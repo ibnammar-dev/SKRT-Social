@@ -46,3 +46,67 @@ SKRT Social is a minimalist social platform focused on meaningful interactions. 
    ```
 
 6. Visit `http://localhost:8000` in your browser 🎉
+
+## 📚 Documentation
+
+- **[Configuration Guide](CONFIGURATION.md)** - Complete configuration documentation
+- **[API Documentation](API_DOCUMENTATION.md)** - RESTful API reference
+- **[Postman Testing](POSTMAN_TESTING.md)** - API testing guide
+
+## 🐳 Docker Quick Start
+
+```bash
+# Start all services (MySQL + Mailpit)
+docker-compose up -d
+
+# Configure database in .env.local
+DATABASE_URL="mysql://app:!ChangeMe!@database:3306/app?serverVersion=8.0&charset=utf8mb4"
+
+# Run migrations
+php bin/console doctrine:migrations:migrate
+
+# Access Mailpit (email testing) at http://localhost:8025
+```
+
+## 🛠️ Development
+
+### Asset Compilation
+
+```bash
+# Watch for changes (development)
+npm run watch
+
+# Build for production
+npm run build
+```
+
+### Database Commands
+
+```bash
+# Create database
+php bin/console doctrine:database:create
+
+# Run migrations
+php bin/console doctrine:migrations:migrate
+
+# Create a new migration
+php bin/console make:migration
+```
+
+## 🚀 Production Deployment
+
+See [CONFIGURATION.md](CONFIGURATION.md#production-deployment) for detailed production deployment guide.
+
+Quick checklist:
+1. Set `APP_ENV=prod` and strong `APP_SECRET`
+2. Build assets: `npm run build`
+3. Optimize autoloader: `composer install --no-dev --optimize-autoloader`
+4. Clear cache: `php bin/console cache:clear --env=prod`
+5. Run migrations: `php bin/console doctrine:migrations:migrate`
+
+## 🔐 Security
+
+- Form-based authentication for web interface
+- Token-based authentication for API
+- CSRF protection enabled
+- Role-based access control (USER, ADMIN)

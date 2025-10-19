@@ -21,6 +21,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('post-actions', './assets/post-actions.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -52,6 +53,14 @@ Encore
         config.useBuiltIns = 'usage';
         config.corejs = '3.38';
     })
+
+    // Enable PostCSS for autoprefixing (uncomment if using PostCSS)
+    // .enablePostCssLoader()
+
+    // Optimize images (if you add image-loader)
+    // .configureImageRule({
+    //     type: 'asset',
+    // })
 
     // enables Sass/SCSS support
     //.enableSassLoader()

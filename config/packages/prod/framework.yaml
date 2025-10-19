@@ -1,0 +1,48 @@
+framework:
+    # Optimize error handling for production
+    handle_all_throwables: true
+    http_method_override: true
+    
+    # Session configuration for production
+    session:
+        # Use Redis or Memcached in production for better performance
+        # handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
+        cookie_secure: auto
+        cookie_httponly: true
+        cookie_samesite: lax
+        gc_probability: 1
+        gc_divisor: 100
+        gc_maxlifetime: 3600
+    
+    # PHP errors - minimal logging in production
+    php_errors:
+        log: true
+        # Don't show errors to users
+        display_errors: false
+    
+    # Enable HTTP cache
+    http_cache:
+        enabled: true
+    
+    # Annotations cache
+    annotations:
+        cache: php_array
+    
+    # Serializer cache
+    serializer:
+        cache: php_array
+    
+    # Property info cache
+    property_info:
+        cache: php_array
+    
+    # Enable APCu for better performance (if available)
+    cache:
+        prefix_seed: 'skrt_social_prod'
+        app: cache.adapter.apcu
+        system: cache.adapter.apcu
+        default_redis_provider: 'redis://localhost'
+        pools:
+            cache.rate_limiter:
+                adapter: cache.adapter.apcu
+

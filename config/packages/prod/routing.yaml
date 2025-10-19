@@ -1,0 +1,10 @@
+framework:
+    router:
+        # Cache routes for better performance
+        strict_requirements: null
+        # Use APCu for route caching
+        cache_dir: '%kernel.cache_dir%'
+        # Enable route caching
+        resource: '%kernel.project_dir%/config/routes.yaml'
+        type: yaml
+

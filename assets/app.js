@@ -1,13 +1,13 @@
 /*
  * Welcome to your app's main JavaScript file!
  *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+ * This file is compiled by Webpack Encore and handles custom application logic.
+ * Stimulus/Turbo are loaded separately via importmap in base.html.twig.
+ * See webpack.config.js for Webpack configuration.
  */
 import './styles/app.css';
-import './js/post-actions.js';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+console.log('SKRT Social - App initialized 🎉');
 
 document.addEventListener('DOMContentLoaded', function() {
     const uploadArea = document.getElementById('uploadArea');
