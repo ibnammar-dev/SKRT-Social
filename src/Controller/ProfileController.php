@@ -15,7 +15,7 @@ use App\Entity\Post;
 class ProfileController extends AbstractController
 {
     #[Route('/profile/{id}', name: 'app_profile')]
-    public function index(?User $user = null, Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, ?User $user = null): Response
     {
         if (!$user) {
             $user = $this->getUser();

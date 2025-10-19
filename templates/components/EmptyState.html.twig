@@ -1,0 +1,13 @@
+<div {{ attributes.defaults({class: 'empty-state'}) }}>
+    <i class="fas {{ icon }} empty-state-icon"></i>
+    <h5 class="empty-state-title">{{ title }}</h5>
+    {% if text %}
+        <p class="empty-state-text">{{ text }}</p>
+    {% endif %}
+    {% if actionUrl and actionText %}
+        <a href="{{ actionUrl }}" class="btn btn-gradient">
+            {{ actionText }}
+        </a>
+    {% endif %}
+</div>
+

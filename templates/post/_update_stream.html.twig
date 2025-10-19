@@ -1,0 +1,7 @@
+{# Turbo Stream: Replace the post content #}
+<turbo-stream action="replace" target="post-content-{{ post.id }}">
+    <template>
+        {{ include('post/_content.html.twig', {post: post}) }}
+    </template>
+</turbo-stream>
+

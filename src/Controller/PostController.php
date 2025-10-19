@@ -54,10 +54,23 @@ final class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            // Return the new post HTML using the consistent component
-            return $this->render('components/post_card.html.twig', [
-                'post' => $post
-            ]);
+            // Check if request is from Turbo (check Accept header)
+            $acceptHeader = $request->headers->get('Accept', '');
+            if (str_contains($acceptHeader, 'text/vnd.turbo-stream.html')) {
+                $this->addFlash('success', 'Post created successfully!');
+
+                $response = $this->render('post/_create_stream.html.twig', [
+                    'post' => $post,
+                    'form' => $this->createForm(PostType::class, new Post())->createView(),
+                ]);
+                $response->headers->set('Content-Type', 'text/vnd.turbo-stream.html; charset=utf-8');
+
+                return $response;
+            }
+
+            // Fallback: Redirect to feed
+            $this->addFlash('success', 'Post created successfully!');
+            return $this->redirectToRoute('app_post');
         }
 
         // If form is not valid, return error response
@@ -137,7 +150,7 @@ final class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/post/{id}/edit', name: 'post_edit', methods: ['POST'])]
+    #[Route('/post/{id}/edit', name: 'post_update', methods: ['POST'])]
     public function edit(Request $request, Post $post, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('edit', $post);
@@ -156,7 +169,10 @@ final class PostController extends AbstractController
 
         $entityManager->flush();
 
-        // Return just the content part
+        $this->addFlash('success', 'Post updated successfully!');
+
+        // Return the updated content wrapped in the turbo-frame
+        // Turbo Frames handle the replacement automatically
         return $this->render('post/_content.html.twig', [
             'post' => $post
         ]);
@@ -172,8 +188,22 @@ final class PostController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token');
         }
 
+        $postId = $post->getId();
         $entityManager->remove($post);
         $entityManager->flush();
+
+        // Check if request is from Turbo (check Accept header)
+        $acceptHeader = $request->headers->get('Accept', '');
+        if (str_contains($acceptHeader, 'text/vnd.turbo-stream.html')) {
+            $this->addFlash('success', 'Post deleted successfully!');
+
+            $response = $this->render('post/_delete_stream.html.twig', [
+                'postId' => $postId
+            ]);
+            $response->headers->set('Content-Type', 'text/vnd.turbo-stream.html; charset=utf-8');
+
+            return $response;
+        }
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

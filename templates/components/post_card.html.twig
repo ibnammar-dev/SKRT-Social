@@ -24,37 +24,42 @@
 				{% endembed %}
 			</div>
 
-			{% if app.user == post.user %}
-				<div class="dropdown">
-					<button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
-						<i class="fas fa-ellipsis-h"></i>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-end">
-						<li>
-							<button class="dropdown-item" onclick="editPost({{ post.id }})">
-								<i class="fas fa-edit me-2"></i>Edit
-							</button>
-						</li>
-						<li>
-							<button class="dropdown-item text-danger" onclick="confirmDelete({{ post.id }})">
-								<i class="fas fa-trash me-2"></i>Delete
-							</button>
-						</li>
-					</ul>
-				</div>
-			{% endif %}
+		{% if app.user == post.user %}
+			<div class="dropdown">
+				<button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
+					<i class="fas fa-ellipsis-h"></i>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li>
+						<a class="dropdown-item" href="{{ path('post_edit_form', {id: post.id}) }}" data-turbo-frame="post-content-{{ post.id }}">
+							<i class="fas fa-edit me-2"></i>Edit
+						</a>
+					</li>
+					<li>
+						<button class="dropdown-item text-danger" 
+						        data-controller="modal"
+						        data-action="click->modal#confirmDelete"
+						        data-modal-url-value="{{ path('post_delete', {id: post.id}) }}"
+						        data-modal-title-value="Delete Post"
+						        data-modal-message-value="Are you sure you want to delete this post? This action cannot be undone.">
+							<i class="fas fa-trash me-2"></i>Delete
+						</button>
+					</li>
+				</ul>
+			</div>
+		{% endif %}
 		</div>
 
-		{# Post Content #}
-		<div class="post-content-{{ post.id }}">
-			<p class="card-text mb-3">{{ post.text }}</p>
+	{# Post Content #}
+	<turbo-frame id="post-content-{{ post.id }}">
+		<p class="card-text mb-3">{{ post.text }}</p>
 
-			{# Post Image #}
-			{% if post.imageName %}
-				<div class="post-image-container">
-					<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" class="post-image">
-				</div>
-			{% endif %}
-		</div>
+		{# Post Image #}
+		{% if post.imageName %}
+			<div class="post-image-container">
+				<img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Post image" class="post-image">
+			</div>
+		{% endif %}
+	</turbo-frame>
 	</div>
 </div>

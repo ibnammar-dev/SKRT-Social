@@ -1,4 +1,7 @@
-²
+/* ============================================
+   SKRT Social - Main Application Styles
+   ============================================ */
+
 :root {
     /* Define theme colors as CSS variables */
     --primary-gradient-start: #ff6b6b;
@@ -544,5 +547,115 @@ a {
 
 .posts-container > .card {
     will-change: transform, opacity;
+}
+
+/* ============================================
+   Avatar Component Styles (Additional Sizes)
+   ============================================ */
+
+/* Empty State Component */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: #6c757d;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.empty-state-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Flash Messages */
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 400px;
+}
+
+.flash-message {
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideInRight 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.flash-message-success {
+    background: linear-gradient(45deg, #10b981, #059669);
+    color: white;
+}
+
+.flash-message-error {
+    background: linear-gradient(45deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.flash-message-warning {
+    background: linear-gradient(45deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.flash-message-info {
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.flash-message-icon {
+    font-size: 1.25rem;
+}
+
+.flash-message-close {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.flash-message-close:hover {
+    opacity: 1;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
 }
 

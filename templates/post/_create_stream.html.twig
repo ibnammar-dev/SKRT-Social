@@ -1,0 +1,73 @@
+{# Turbo Stream: Prepend new post to the list #}
+<turbo-stream action="prepend" target="posts-list">
+    <template>
+        {{ include('components/post_card.html.twig', {post: post}) }}
+    </template>
+</turbo-stream>
+
+{# Turbo Stream: Replace the form to reset it #}
+<turbo-stream action="replace" target="create-post-form">
+    <template>
+        <div id="create-post-form" class="card shadow-sm mb-4 w-50 p-0">
+            {{ form_start(form, {
+                'attr': {
+                    'class': 'create-post-form',
+                    'data-controller': 'form',
+                    'data-action': 'turbo:submit-start->form#disableSubmit turbo:submit-end->form#enableSubmit',
+                    'data-turbo-frame': '_top'
+                },
+                'action': path('post_create')
+            }) }}
+            <div class="card-body pb-0">
+                <div class="mb-3">
+                    {{ form_widget(form.text, {
+                        'attr': {
+                            'class': 'form-control border-1',
+                            'placeholder': 'Hey ' ~ app.user.firstName ~ ', what\'s on your mind?',
+                            'rows': '3'
+                        }
+                    }) }}
+                </div>
+                
+                {# Image Upload Area with Stimulus #}
+                <div class="upload-area mb-3" 
+                     data-controller="image-preview"
+                     data-action="click->image-preview#openFileDialog dragenter->image-preview#highlight dragover->image-preview#highlight dragleave->image-preview#unhighlight drop->image-preview#handleDrop">
+                    {{ form_widget(form.imageFile, {
+                        'attr': {
+                            'class': 'hidden-file-input',
+                            'data-image-preview-target': 'input',
+                            'data-action': 'change->image-preview#handleFileSelect'
+                        }
+                    }) }}
+                    <div class="upload-area-inner">
+                        <div class="upload-area-content text-center" data-image-preview-target="uploadPrompt">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span class="ms-2">Add Image</span>
+                        </div>
+                        <div class="preview-container d-none" data-image-preview-target="previewContainer">
+                            <img data-image-preview-target="preview" src="#" alt="Preview" class="img-preview">
+                            <button type="button" class="btn-remove-image" data-action="click->image-preview#removeImage">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer p-0">
+                <button type="submit" 
+                        class="btn btn-gradient w-100 rounded-0 rounded-bottom py-3"
+                        data-form-target="submit">
+                    <i class="fas fa-paper-plane me-2"></i>Post
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </template>
+</turbo-stream>
+
+{# Remove "no posts" message if it exists #}
+<turbo-stream action="remove" target="no-posts-message">
+    <template></template>
+</turbo-stream>
+

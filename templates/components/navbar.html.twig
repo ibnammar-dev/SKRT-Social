@@ -1,17 +1,23 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" role="navigation" aria-label="Main navigation">
 	<div class="container">
 		<div class="d-flex justify-content-between align-items-center w-100">
-			<h1>
-				{% include 'components/_app_name.html.twig' %}
-			</h1>
+			<a href="{{ path('post_index') }}" class="navbar-brand m-0" aria-label="Home">
+				<h1 class="h4 m-0">
+					{% include 'components/_app_name.html.twig' %}
+				</h1>
+			</a>
 			<div class="ms-auto d-flex align-items-center gap-4">
-				<a href="{{ path('post_index') }}" class="nav-icon-link">
-					<i class="fa-solid fa-house gradient-text"></i>
+				<a href="{{ path('post_index') }}" class="nav-icon-link" aria-label="Home" title="Home">
+					<i class="fa-solid fa-house gradient-text" aria-hidden="true"></i>
 				</a>
 
 				{# Profile Preview Button #}
 				<div class="dropdown">
-					<button class="btn p-0 border-0 d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false">
+					<button class="btn p-0 border-0 d-flex align-items-center gap-2" 
+					        data-bs-toggle="dropdown" 
+					        aria-expanded="false"
+					        aria-label="User menu"
+					        aria-haspopup="true">
 						{% if app.user.profilePicture %}
 							<img src="{{ vich_uploader_asset(app.user, 'profilePictureFile') }}" alt="Profile" class="nav-profile-pic">
 						{% else %}
@@ -23,37 +29,25 @@
 						<i class="fa-solid fa-bars gradient-text ms-2 nav-icon"></i>
 					</button>
 
-					<ul class="dropdown-menu dropdown-menu-end">
-						<li>
-							<a class="dropdown-item" href="{{ path('app_profile', {id: app.user.id}) }}">
-								<i class="fa-solid fa-user me-2 gradient-text"></i>
+					<ul class="dropdown-menu dropdown-menu-end" role="menu" aria-label="User menu">
+						<li role="none">
+							<a class="dropdown-item" href="{{ path('app_profile', {id: app.user.id}) }}" role="menuitem">
+								<i class="fa-solid fa-user me-2 gradient-text" aria-hidden="true"></i>
 								<span class="gradient-text">Profile</span>
 							</a>
 						</li>
 						{% if is_granted('ROLE_ADMIN') %}
-							<li>
-								<a class="dropdown-item" href="{{ path('admin_dashboard') }}">
-									<i class="fa-solid fa-gauge me-2 gradient-text"></i>
+							<li role="none">
+								<a class="dropdown-item" href="{{ path('admin_dashboard') }}" role="menuitem">
+									<i class="fa-solid fa-gauge me-2 gradient-text" aria-hidden="true"></i>
 									<span class="gradient-text">Admin Dashboard</span>
 								</a>
 							</li>
 						{% endif %}
-						<li>
-							<a class="dropdown-item" href="#">
-								<i class="fa-solid fa-gear me-2 gradient-text"></i>
-								<span class="gradient-text">Settings</span>
-							</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#">
-								<i class="fa-solid fa-heart me-2 gradient-text"></i>
-								<span class="gradient-text">Donate</span>
-							</a>
-						</li>
-						<li><hr class="dropdown-divider"></li>
-						<li>
-							<a class="dropdown-item" href="{{ path('app_logout') }}">
-								<i class="fa-solid fa-right-from-bracket me-2 gradient-text"></i>
+						<li><hr class="dropdown-divider" role="separator"></li>
+						<li role="none">
+							<a class="dropdown-item" href="{{ path('app_logout') }}" role="menuitem">
+								<i class="fa-solid fa-right-from-bracket me-2 gradient-text" aria-hidden="true"></i>
 								<span class="gradient-text">Log out</span>
 							</a>
 						</li>

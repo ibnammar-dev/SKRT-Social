@@ -6,11 +6,14 @@
 <div class="container py-4">
 	{# Create Post Card #}
 	<div class="row justify-content-center">
-		<div class="card shadow-sm mb-4 w-50 p-0">
+		<div class="card shadow-sm mb-4 w-50 p-0" id="create-post-form">
 			{{ form_start(form, {
+				'action': path('post_create'),
 				'attr': {
-					'class': 'create-post-form js-create-post-form',
-					'data-action': path('post_create')
+					'class': 'create-post-form',
+					'data-controller': 'form',
+					'data-action': 'turbo:submit-start->form#disableSubmit turbo:submit-end->form#enableSubmit',
+					'data-turbo-frame': '_top'
 				}
 			}) }}
 			<div class="card-body pb-0">
@@ -23,30 +26,32 @@
 						}
 					}) }}
 				</div>
-				{# Image Upload Area #}
-				<div class="upload-area mb-3" id="uploadArea">
-					{{ form_widget(form.imageFile, {
-						'attr': {
-							'class': 'hidden-file-input',
-							'data-target': 'preview-image'
-						}
-					}) }}
-					<div class="upload-area-inner">
-						<div class="upload-area-content text-center">
-							<i class="fas fa-cloud-upload-alt"></i>
-							<span class="ms-2">Add Image</span>
-						</div>
-						<div id="previewContainer" class="preview-container d-none">
-							<img id="preview-image" src="#" alt="Preview" class="img-preview">
-							<button type="button" class="btn-remove-image">
-								<i class="fas fa-times"></i>
-							</button>
-						</div>
+			{# Image Upload Area with Stimulus #}
+			<div class="upload-area mb-3" 
+			     data-controller="image-preview"
+			     data-action="click->image-preview#openFileDialog dragenter->image-preview#highlight dragover->image-preview#highlight dragleave->image-preview#unhighlight drop->image-preview#handleDrop">
+				{{ form_widget(form.imageFile, {
+					'attr': {
+						'class': 'hidden-file-input',
+						'data-image-preview-target': 'input',
+						'data-action': 'change->image-preview#handleFileSelect'
+					}
+				}) }}
+				<div class="upload-area-inner">
+					<div class="upload-area-content text-center" data-image-preview-target="uploadPrompt">
+						<i class="fas fa-cloud-upload-alt"></i>
+						<span class="ms-2">Add Image</span>
+					</div>
+					<div class="preview-container d-none" data-image-preview-target="previewContainer">
+						<img data-image-preview-target="preview" src="#" alt="Preview" class="img-preview">
+						<button type="button" class="btn-remove-image" data-action="click->image-preview#removeImage">
+							<i class="fas fa-times"></i>
+						</button>
 					</div>
 				</div>
 			</div>
 			<div class="card-footer p-0">
-				<button type="submit" class="btn btn-gradient w-100 rounded-0 rounded-bottom py-3">
+				<button type="submit" class="btn btn-gradient w-100 rounded-0 rounded-bottom py-3" data-form-target="submit">
 					<i class="fas fa-paper-plane me-2"></i>Post
 				</button>
 			</div>
@@ -56,13 +61,13 @@
 
 	{# Posts List #}
 	<div class="row justify-content-center">
-		<div class="col-md-6 posts-container">
+		<div class="col-md-6" id="posts-list">
 			{% if posts|length > 0 %}
 				{% for post in posts %}
 					{{ include('components/post_card.html.twig', {post: post}) }}
 				{% endfor %}
 			{% else %}
-				<div class="text-center py-5 text-muted">
+				<div id="no-posts-message" class="text-center py-5 text-muted">
 					<i class="fas fa-newspaper fa-3x mb-3"></i>
 					<h5>No posts yet</h5>
 					<p>Be the first to share something!</p>
