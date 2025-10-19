@@ -52,7 +52,7 @@
 
 	{# Post Content #}
 	<turbo-frame id="post-content-{{ post.id }}">
-		<p class="card-text mb-3">{{ post.text }}</p>
+		<p class="card-text mb-3">{{ post.text|default('') }}</p>
 
 		{# Post Image #}
 		{% if post.imageName %}

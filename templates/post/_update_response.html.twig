@@ -1,0 +1,13 @@
+{# Display flash message via Turbo Stream #}
+<turbo-stream action="prepend" target="flash-container">
+    <template>
+        <div class="alert alert-success alert-dismissible fade show flash-message" role="alert">
+            <i class="fas fa-check-circle me-2"></i>Post updated successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </template>
+</turbo-stream>
+
+{# Update the post content via Turbo Frame #}
+{{ include('post/_content.html.twig', {post: post}) }}
+

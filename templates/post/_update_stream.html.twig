@@ -1,3 +1,15 @@
+{# Display flash message #}
+<turbo-stream action="append" target="flash-container">
+    <template>
+        <div class="toast-notification mb-2" role="alert">
+            <i class="fas fa-check-circle me-2"></i>Changes saved! ✨
+            <button type="button" class="btn-close-toast" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </template>
+</turbo-stream>
+
 {# Turbo Stream: Replace the post content #}
 <turbo-stream action="replace" target="post-content-{{ post.id }}">
     <template>

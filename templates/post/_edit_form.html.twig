@@ -4,7 +4,9 @@
 	      enctype="multipart/form-data"
 	      data-controller="form"
 	      data-action="turbo:submit-start->form#disableSubmit turbo:submit-end->form#enableSubmit"
+	      data-turbo-frame="_top"
 	      class="edit-post-form p-2">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete-item') }}">
 		<div class="mb-3">
 			<textarea name="text" class="form-control border-0" rows="4" placeholder="What's on your mind?" style="font-size: 1rem; resize: none;" required>{{ post.text }}</textarea>
 		</div>
@@ -45,7 +47,7 @@
 		{% endif %}
 
 		<div class="d-flex justify-content-end gap-2">
-			<a href="{{ path('app_post') }}" class="btn btn-light">Cancel</a>
+			<a href="{{ path('post_index') }}" class="btn btn-light">Cancel</a>
 			<button type="submit" class="btn btn-gradient" data-form-target="submit">
 				<i class="fas fa-save me-2"></i>Save Changes
 			</button>

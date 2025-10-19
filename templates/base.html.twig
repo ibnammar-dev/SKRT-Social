@@ -72,25 +72,25 @@
 
 	<br>
 	
-	{# Flash Messages #}
-	{% for type, messages in app.flashes %}
-		<div class="flash-messages">
+	{# Flash Messages Container #}
+	<div id="flash-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999; max-width: 350px;">
+		{% for type, messages in app.flashes %}
 			{% for message in messages %}
-				<div class="flash-message flash-message-{{ type }}">
-					<i class="fas flash-message-icon 
+				<div class="toast-notification mb-2" role="alert">
+					<i class="fas 
 						{% if type == 'success' %}fa-check-circle
-						{% elseif type == 'error' %}fa-exclamation-circle
+						{% elseif type == 'danger' or type == 'error' %}fa-exclamation-circle
 						{% elseif type == 'warning' %}fa-exclamation-triangle
 						{% else %}fa-info-circle
-						{% endif %}"></i>
-					<span>{{ message }}</span>
-					<button class="flash-message-close" onclick="this.parentElement.remove()">
+						{% endif %} me-2"></i>
+					{{ message }}
+					<button type="button" class="btn-close-toast" onclick="this.parentElement.remove()">
 						<i class="fas fa-times"></i>
 					</button>
 				</div>
 			{% endfor %}
-		</div>
-	{% endfor %}
+		{% endfor %}
+	</div>
 
 	<!-- Main Content -->
 	<main class="flex-shrink-0">

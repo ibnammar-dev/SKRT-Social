@@ -598,24 +598,56 @@ a {
     gap: 1rem;
 }
 
-.flash-message-success {
-    background: linear-gradient(45deg, #10b981, #059669);
+.toast-notification {
+    background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
     color: white;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    animation: slideInRight 0.4s ease-out;
+    position: relative;
+    min-width: 300px;
 }
 
-.flash-message-error {
-    background: linear-gradient(45deg, #ef4444, #dc2626);
+.btn-close-toast {
+    background: transparent;
+    border: none;
     color: white;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: auto;
+    opacity: 0.8;
+    transition: opacity 0.2s;
 }
 
-.flash-message-warning {
-    background: linear-gradient(45deg, #f59e0b, #d97706);
-    color: white;
+.btn-close-toast:hover {
+    opacity: 1;
 }
 
-.flash-message-info {
-    background: linear-gradient(45deg, #3b82f6, #2563eb);
-    color: white;
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
 }
 
 .flash-message-icon {

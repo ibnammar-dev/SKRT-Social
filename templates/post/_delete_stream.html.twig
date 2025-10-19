@@ -1,3 +1,15 @@
+{# Display flash message #}
+<turbo-stream action="append" target="flash-container">
+    <template>
+        <div class="toast-notification mb-2" role="alert">
+            <i class="fas fa-trash-alt me-2"></i>Post removed 🗑️
+            <button type="button" class="btn-close-toast" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </template>
+</turbo-stream>
+
 {# Turbo Stream: Remove the deleted post #}
 <turbo-stream action="remove" target="post-{{ postId }}">
     <template></template>

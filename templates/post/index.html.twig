@@ -6,7 +6,8 @@
 <div class="container py-4">
 	{# Create Post Card #}
 	<div class="row justify-content-center">
-		<div class="card shadow-sm mb-4 w-50 p-0" id="create-post-form">
+		<div class="col-md-6">
+		<div class="card shadow-sm mb-4 p-0" id="create-post-form">
 			{{ form_start(form, {
 				'action': path('post_create'),
 				'attr': {
@@ -56,6 +57,7 @@
 				</button>
 			</div>
 			{{ form_end(form) }}
+		</div>
 		</div>
 	</div>
 
